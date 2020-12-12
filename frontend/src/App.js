@@ -7,6 +7,7 @@ import Header from "./navigation/Header";
 import Register from "./landings/Register";
 import Login from "./landings/Login";
 import Home from "./landings/Home";
+import PrivateRoute from "./private/PrivateRoute";
 
 function App() {
   const [valid, setValid] = useState({
