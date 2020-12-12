@@ -18,7 +18,8 @@ paper: {
   padding: theme.spacing(6),
   textAlign: "center",
   color: theme.palette.primary.light,
-  // background: "#303030",
+  // margin: "10%",
+  // width: "2rem",
   }
 }));
 
@@ -63,6 +64,16 @@ function Login() {
           id="password"
           autoComplete="current-password"
         />
+        </Grid>
+      <Grid item xs={12} md={10}>
+        <Button 
+        // style={{
+        //   maxWidth: '200%', 
+        //   maxHeight: '220%', 
+        //   minWidth: '100%', 
+        //   minHeight: '100%'
+        // }} 
+        type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>Login</Button>
         </Grid>
       </Grid>
       </Paper>
