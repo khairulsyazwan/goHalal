@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
 //   margin: "30px",
 // },
 paper: {
+  margin: "10px",
   padding: theme.spacing(6),
   textAlign: "center",
   color: theme.palette.primary.light,
-  // margin: "10%",
   // width: "2rem",
   }
 }));
@@ -27,7 +27,7 @@ function Login() {
   const classes = useStyles();
   return (
     <>
-      <Box m={10}>
+      <Box m={8}>
         <Typography variant="h3">
           <Paper className={classes.paper}>
           Login
@@ -49,6 +49,7 @@ function Login() {
           label="Email Address"
           name="email"
           autoComplete="email"
+          autoFocus
         />
         </Grid>
       </Grid>

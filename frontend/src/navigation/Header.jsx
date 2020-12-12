@@ -28,9 +28,17 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   headerOptions: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'space-evenly'
+    
+    // display: 'flex',
+    // flex: 1,
+    // justifyContent: 'flex-start',
+    // flexDirection: 'row',
+    // justifyContent: 'flex-start',
+    // alignContent: 'flex-start'
+    // justifyContent: 'space-evenly'
+  },
+  button: {
+    margin: '30px'
   }
 }));
 
@@ -63,11 +71,11 @@ const Header = props => {
   }
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ background: '#ced4da' }}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Photos
-          </Typography>
+          {/* <Typography variant="h5" className={classes.title}>
+            yeHalal
+          </Typography> */}
           {/* {auth && ( */}
             {isMobile ? (
               <>
@@ -96,9 +104,9 @@ const Header = props => {
               </>
             ) : (
               <div className={classes.headerOptions}>
-                <Button variant="contained" onClick={() => handleButtonClick('/')}>Home</Button>
-                <Button variant="contained" onClick={() => handleButtonClick('/login')}>Login</Button>
-                <Button variant="contained" onClick={() => handleButtonClick('/register')}>Register</Button>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/')}>Home</Button>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/login')}>Login</Button>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button>
               </div>
             ) 
           }

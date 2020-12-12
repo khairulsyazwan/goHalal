@@ -16,7 +16,7 @@ grid: {
   margin: "30px",
 },
 paper: {
-  padding: theme.spacing(10),
+  padding: theme.spacing(5),
   // textAlign: "center",
   color: theme.palette.primary.light,
   // background: "#303030",
@@ -27,7 +27,7 @@ function Register() {
   const classes = useStyles();
   return (
     <>
-      <Box m={10}>
+      <Box m={8}>
         <Typography variant="h3">
           <Paper className={classes.paper}>
           Register
@@ -53,7 +53,7 @@ function Register() {
         />
         {/* </Paper> */}
         </Grid>
-        <Grid item xs={8} md={3}>
+        <Grid item xs={9} md={3}>
         {/* <Paper className={classes.paper}> */}
         <TextField
           variant="outlined"
@@ -78,7 +78,7 @@ function Register() {
           fullWidth
           id="contact"
           label="Contact"
-          autoFocus
+          // autoFocus
         />
         {/* </Paper> */}
         </Grid>
@@ -92,7 +92,7 @@ function Register() {
           fullWidth
           id="username"
           label="Username"
-          autoFocus
+          // autoFocus
         />
         {/* </Paper> */}
         </Grid>
