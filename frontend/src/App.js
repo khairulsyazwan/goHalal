@@ -8,6 +8,7 @@ import Register from "./landings/Register";
 import Login from "./landings/Login";
 import Home from "./landings/Home";
 import PrivateRoute from "./private/PrivateRoute";
+import Map from "./maps/Map";
 
 function App() {
   const [valid, setValid] = useState({
@@ -26,6 +27,10 @@ function App() {
         </Route>
         <Route path="/register">
           <Register />
+        </Route>
+
+        <Route path="/map">
+          <Map />
         </Route>
       </Switch>
     </BrowserRouter>
