@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.views.decorators.csrf import csrf_exempt
+import cloudinary.api
 from .models import *
 from .serializers import *
 
@@ -102,10 +103,29 @@ def upload_image(request, id):
 
     if request.method == 'PUT':
         profile_serializer = ProfileSerializer(instance=user.profile, data=request.data)
+        # delete previous profile photo from cloudinary before saving new one
+        cloudinary.api.delete_resources(user.profile.profile_pic)
 
         if profile_serializer.is_valid():
             profile_serializer.save()
             return Response(profile_serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
+
+# Delete User
+@csrf_exempt
+@api_view(['DELETE',])
+@permission_classes([IsAuthenticated])
+def delete_user(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        # delete profile photo when deleting user
+        cloudinary.api.delete_resources(user.profile.profile_pic)
+        user.delete()
+        return Response({"Deleted user successfully"}, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
