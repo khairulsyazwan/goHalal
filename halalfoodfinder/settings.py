@@ -68,9 +68,9 @@ MIDDLEWARE = [
 ]
 
 cloudinary.config(
-  cloud_name = os.environ.get('duc92lclp'),
-  api_key = os.environ.get('496893592161112'),
-  api_secret = os.environ.get('kcEt5TTPFNWpWuOHWg6clafyky0'),
+  cloud_name = 'duc92lclp',
+  api_key = '496893592161112',
+  api_secret = 'kcEt5TTPFNWpWuOHWg6clafyky0',
   secure = True
 )
 

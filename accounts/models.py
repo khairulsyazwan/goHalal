@@ -14,9 +14,19 @@ class User(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    profile_pic = CloudinaryField('image')
+    profile_pic = CloudinaryField('image', default="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg")
     # reviews = models.ManyToManyField()
     # favourites = models.ManyToManyField()
+
+    def __str__(self):
+        return self.user.username
+    
+# create User Profile when User is being created
+def create_user_profile(sender, instance, created, **kwargs):  
+    if created:  
+       profile, created = UserProfile.objects.get_or_create(user=instance)  
+
+post_save.connect(create_user_profile, sender=User) 
 
 # gives a token every time a user is registered
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

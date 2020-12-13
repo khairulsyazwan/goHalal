@@ -26,4 +26,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
+# User Serializer
+class UserSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = User
+        exclude = ['is_superuser', 'is_staff', 'is_active', 'groups', 'user_permissions', 'last_login', 'password']
+
+# Profile Serializer
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_pic']
 
