@@ -2,9 +2,9 @@ import React from 'react'
 import { Box, Button, Container, FormRow, Grid, Link, Paper, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-// import Axios from 'axios'
-// import { Formik } from "formik";
-// import * as Yup from "yup";
+import Axios from 'axios'
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 
 
@@ -24,6 +24,22 @@ paper: {
 }));
 
 function Register() {
+  const register = () => {
+    console.log("clicked register")
+  }
+  // const [loading, setLoading] = useState(false);
+  // const [emailExists, setEmailExists] = useState("");
+
+  // async function checkSimilarEmail(email) {
+  //   setLoading(true);
+  //   if(email !== "") {
+  //     try {
+  //       let exists = await Axios.get(`/api/v1/auth/${email}`)
+  //     } catch (error) {
+  //       return
+  //     }
+  //   }
+  // }
   const classes = useStyles();
   return (
     <>
@@ -121,7 +137,7 @@ function Register() {
           minHeight: '100%'
         }} 
         
-        type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>Register</Button>
+        type="submit" size="large" variant="contained" color="secondary" className={classes.submit} onClick={register}>Register</Button>
         </Grid>
       </Grid>
       </Box>
