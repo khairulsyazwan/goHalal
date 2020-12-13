@@ -89,3 +89,23 @@ def update_user(request, id):
             return Response(user_serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Upload Photo
+@csrf_exempt
+@api_view(['PUT',])
+@permission_classes([IsAuthenticated])
+def upload_image(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        profile_serializer = ProfileSerializer(instance=user.profile, data=request.data)
+
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            return Response(profile_serializer.data, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
