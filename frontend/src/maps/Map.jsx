@@ -30,13 +30,14 @@ function Map() {
   const [markers, setMarkers] = useState([]);
   const [currentRestaurants, setCurrentRestaurants] = useState([]);
   const [locationMarker, setLocationMarker] = useState([]);
-  // const [highlightedMarker, setHighlightedMarker] = useState();
+  const [highlightedMarker, setHighlightedMarker] = useState("");
   const [locations, setLocations] = useState([]);
 
-  let highlightedMarker = "";
   useEffect(() => {
     getRestaurants();
-    return () => {};
+    return () => {
+      removeMarkers();
+    };
   }, []);
 
   const useStyles = makeStyles((theme) => ({
@@ -68,6 +69,7 @@ function Map() {
         arr.push(holding);
       }
       setLocations(arr);
+      getLocation();
     } catch (err) {
       console.log(err.response);
     }
@@ -129,7 +131,7 @@ function Map() {
       }
     }
     resultsMain.sort(compareValues("distance"));
-    setCurrentRestaurants([]);
+    // setCurrentRestaurants([]);
     return [results, resId, resultsMain];
   }
 
@@ -168,14 +170,14 @@ function Map() {
       setCenter(originLocation);
       setZoom(15);
       setLocationMarker(originLocation);
-      console.log(originLocation);
+      // console.log(originLocation);
       let res = calcDist(locations, originLocation);
       let results = res[0];
       let curRes = res[2];
-      setCurrentRestaurants(curRes);
+
       removeMarkers();
       setMarkers(results);
-      console.log();
+      setCurrentRestaurants(curRes);
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
@@ -183,6 +185,7 @@ function Map() {
 
   function removeMarkers() {
     setMarkers([]);
+    setCurrentRestaurants([]);
   }
 
   function getLocation() {
@@ -208,7 +211,6 @@ function Map() {
           setMarkers(results);
           setCurrentRestaurants(curRes);
           setLocationMarker(pos);
-          // console.log(results);
         },
         () => {
           alert("Try again.");
@@ -220,35 +222,21 @@ function Map() {
     }
   }
 
+  function hello(id) {
+    setHighlightedMarker("");
+    setHighlightedMarker(id);
+    console.log(highlightedMarker);
+  }
+
   const renderMap = () => {
     return (
       <>
         <GoogleMap
-          highlightedMarker={center}
           mapContainerStyle={containerStyle}
           zoom={zoom}
           center={center}
           options={options}
         >
-          <Button
-            onClick={getLocation}
-            variant="contained"
-            color="primary"
-            style={{
-              padding: `4px 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: "absolute",
-              left: "60%",
-              // top: "4%",
-              marginLeft: "-15px",
-            }}
-          >
-            Get my location
-          </Button>
           <Autocomplete
             onLoad={onLoad}
             onPlaceChanged={onPlaceChanged}
@@ -275,6 +263,26 @@ function Map() {
             />
           </Autocomplete>
 
+          {/* <Button
+            onClick={getLocation}
+            variant="contained"
+            color="primary"
+            style={{
+              padding: `4px 12px`,
+              borderRadius: `3px`,
+              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+              fontSize: `14px`,
+              outline: `none`,
+              textOverflow: `ellipses`,
+              position: "absolute",
+              left: "50%",
+              top: "10%",
+              // marginLeft: "-15px",
+            }}
+          >
+            Get my location
+          </Button> */}
+
           {locationMarker && <Marker />}
 
           {markers.length != 0 &&
@@ -299,7 +307,7 @@ function Map() {
         <Grid container spacing={3}>
           {currentRestaurants.length != 0 &&
             currentRestaurants.map((mark, index) => (
-              <Grid item md={3}>
+              <Grid item md={3} onClick={() => hello(mark.id)}>
                 <Paper key={index} id={mark.id}>
                   <img src={mark.picture} alt="picture here" />
                   <h2>{mark.name}</h2>
