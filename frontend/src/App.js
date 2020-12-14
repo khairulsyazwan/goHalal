@@ -9,13 +9,14 @@ import Login from "./landings/Login";
 import Home from "./landings/Home";
 import PrivateRoute from "./private/PrivateRoute";
 import Map from "./maps/Map";
+import Restaurant from "./pages/Restaurant";
 
 function App() {
   const [valid, setValid] = useState({
     valid: false,
     refreshed: true,
   });
-  
+
   return (
     <BrowserRouter basename="/">
       <Header />
@@ -32,6 +33,10 @@ function App() {
 
         <Route path="/map">
           <Map />
+        </Route>
+
+        <Route path="/restaurant/:id">
+          <Restaurant />
         </Route>
       </Switch>
     </BrowserRouter>

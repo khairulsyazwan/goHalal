@@ -23,18 +23,18 @@ paper: {
 
 const Register = () => {
   const classes = useStyles();
-  const [formData, setFormData] = useState({
-    email: '',
-    username: '',
-    password: ''
-  });
+  // const [formData, setFormData] = useState({
+  //   email: '',
+  //   username: '',
+  //   password: ''
+  // });
 
-  const { name, email, password } = formData;
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  // const { name, email, password } = formData;
+  // const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-  }
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  // }
 
   return (
         <>

@@ -37,6 +37,7 @@ class Restaurant(models.Model):
     capacity = models.IntegerField(default=50, null=True)
     lat = models.FloatField()
     lng = models.FloatField()
+    restaurant_id = models.IntegerField(null=True)
     # reviews = models.ManyToManyField()
 
     def __str__(self):

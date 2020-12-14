@@ -15,6 +15,7 @@ import Menu from '@material-ui/core/Menu';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { withRouter } from 'react-router-dom';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -107,6 +108,7 @@ const Header = props => {
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/')}>Home</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/login')}>Login</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/map')}>Map</Button>
               </div>
             ) 
           }

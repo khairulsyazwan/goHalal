@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { computeDistanceBetween } from "spherical-geometry-js";
+import { NavLink } from "react-router-dom";
 import {
   GoogleMap,
   useLoadScript,
@@ -8,9 +9,13 @@ import {
 } from "@react-google-maps/api";
 // import mapStyle from "./MapStyle";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { locations } from "./rest-arr";
+// import { locations } from "./rest-arr";
 import { Button } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
+import axios from "axios";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 
 /* global google */
 
@@ -23,14 +28,58 @@ function Map() {
     lng: 103.8198,
   });
   const [markers, setMarkers] = useState([]);
-  const [restaurantId, setRestaurantId] = useState([]);
   const [currentRestaurants, setCurrentRestaurants] = useState([]);
   const [locationMarker, setLocationMarker] = useState([]);
-  const [highlightedMarker, setHighlightedMarker] = useState();
+  // const [highlightedMarker, setHighlightedMarker] = useState();
+  const [locations, setLocations] = useState([]);
+
+  let highlightedMarker = "";
+  useEffect(() => {
+    getRestaurants();
+    return () => {};
+  }, []);
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      height: 140,
+      width: 100,
+    },
+    control: {
+      padding: theme.spacing(2),
+    },
+  }));
+
+  async function getRestaurants() {
+    try {
+      let resp = await axios.get("http://localhost:8000/api/v1/restaurants/");
+      let rest = resp.data.restaurants;
+      let arr = locations;
+      for (let index = 0; index < rest.length; index++) {
+        let holding = [];
+        holding.push(rest[index].name);
+        holding.push(rest[index].lat);
+        holding.push(rest[index].lng);
+        holding.push(rest[index].id);
+        holding.push(rest[index].address);
+        holding.push(rest[index].picture);
+        arr.push(holding);
+      }
+      setLocations(arr);
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+
+  function setDrop(id) {
+    window.alert("id");
+  }
 
   const containerStyle = {
     width: "100%",
-    height: "50vh",
+    height: "70vh",
   };
 
   const options = {
@@ -67,18 +116,20 @@ function Map() {
       let res = computeDistanceBetween(loc2, loc);
       //   1km radius
       if (res <= 1000) {
+        // console.log(arr[i]);
         results.push(arr[i]);
         // push restaurant id as reference
         resId.push(i + 1);
         resultsMain.push({
           name: arr[i][0],
           distance: Math.floor(res),
-          id: i + 1,
+          id: arr[i][3],
+          address: arr[i][4],
+          picture: arr[i][5],
         });
       }
     }
     resultsMain.sort(compareValues("distance"));
-    setRestaurantId([]);
     setCurrentRestaurants([]);
     return [results, resId, resultsMain];
   }
@@ -121,12 +172,11 @@ function Map() {
       console.log(originLocation);
       let res = calcDist(locations, originLocation);
       let results = res[0];
-      let resId = res[1];
       let curRes = res[2];
-      setRestaurantId(resId);
       setCurrentRestaurants(curRes);
       removeMarkers();
       setMarkers(results);
+      console.log();
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
@@ -154,14 +204,12 @@ function Map() {
           );
           let res = calcDist(locations, originLocation);
           let results = res[0];
-          let resId = res[1];
           let curRes = res[2];
-          setRestaurantId(resId);
           removeMarkers();
           setMarkers(results);
           setCurrentRestaurants(curRes);
           setLocationMarker(pos);
-          //   console.log(results, resId);
+          // console.log(results);
         },
         () => {
           alert("Try again.");
@@ -233,7 +281,7 @@ function Map() {
           {markers.length != 0 &&
             markers.map((mark, index) => (
               <Marker
-                id={`marker-${index + 1}`}
+                id={mark[3]}
                 key={index}
                 onLoad={onLoadMarker}
                 position={{
@@ -241,23 +289,30 @@ function Map() {
                   lng: mark[2],
                 }}
                 title={mark[0]}
-                animation={google.maps.Animation.DROP}
+                animation={
+                  highlightedMarker === mark[3]
+                    ? google.maps.Animation.BOUNCE
+                    : ""
+                }
               />
             ))}
         </GoogleMap>
-        <div>
-          <Container>
-            <ol>
-              {currentRestaurants.length != 0 &&
-                currentRestaurants.map((mark, index) => (
-                  <li key={index} id={index + 1}>
-                    <h2>{mark.name}</h2> <h3>{mark.distance}m away</h3>
-                    <h3>{mark.id}</h3>
-                  </li>
-                ))}
-            </ol>
-          </Container>
-        </div>
+        <Grid container spacing={3}>
+          {currentRestaurants.length != 0 &&
+            currentRestaurants.map((mark, index) => (
+              <Grid item md={3}>
+                <Paper key={index} id={mark.id}>
+                  <img src={mark.picture} alt="picture here" />
+                  <h2>{mark.name}</h2>
+                  <h3>{mark.address}</h3>
+                  <h3>{mark.distance}m away</h3>
+                  <NavLink to={`/restaurant/${mark.id}`}>
+                    <p>View Hafiz</p>{" "}
+                  </NavLink>
+                </Paper>
+              </Grid>
+            ))}
+        </Grid>
       </>
     );
   };
