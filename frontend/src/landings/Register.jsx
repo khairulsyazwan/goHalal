@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Box, Button, Grid, Paper, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,18 +23,33 @@ paper: {
 
 const Register = () => {
   const classes = useStyles();
-  // const [formData, setFormData] = useState({
-  //   email: '',
-  //   username: '',
-  //   password: ''
-  // });
+  const [formData, setFormData] = useState({
+    email: '',
+    username: '',
+    password: ''
+  });
+
+  async function register(values) {
+    try {
+      //register user
+      let resp = await Axios.post("http://localhost:8000/api/v1/auth/signup/", formData);
+      //store token in local storage
+      localStorage.setItem('token', resp.data.token);
+      localStorage.setItem('username', resp.data.user.username);
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   // const { name, email, password } = formData;
-  // const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  // }
+  const onSubmit = (e) => {
+    register()
+  }
+
+  console.log(formData)
 
   return (
         <>
@@ -60,6 +75,7 @@ const Register = () => {
               fullWidth
               id="name"
               label="Name"
+              
               autoFocus
             />
             {/* </Paper> */}
@@ -72,6 +88,7 @@ const Register = () => {
               fullWidth
               id="email"
               label="Email Address"
+              onChange={onChange}
               name="email"
               autoComplete="email"
             />
@@ -103,6 +120,7 @@ const Register = () => {
               fullWidth
               id="username"
               label="Username"
+              onChange={onChange}
               // autoFocus
             />
             {/* </Paper> */}
@@ -117,6 +135,7 @@ const Register = () => {
               fullWidth
               name="password"
               label="Password"
+              onChange={onChange}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -138,7 +157,7 @@ const Register = () => {
             color="secondary" 
             className={classes.submit}
             // disabled={isSubmitting}
-            // onClick={submitForm}
+            onClick={onSubmit}
             >Register</Button>
             </Grid>
           </Grid>
