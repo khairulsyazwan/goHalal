@@ -88,7 +88,6 @@ function Map() {
   };
 
   const ACoptions = {
-    // types: ["geocode"],
     componentRestrictions: { country: "sg" },
   };
 
