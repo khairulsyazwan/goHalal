@@ -99,7 +99,6 @@ const Header = props => {
                   onClose={() => setAnchorEl(null)}
                 >
                   <MenuItem onClick={() => handleMenuClick('/')}>Home</MenuItem>
-                  <MenuItem onClick={() => handleMenuClick('/map')}>Map</MenuItem>
                   <MenuItem onClick={() => handleMenuClick('/login')}>Login</MenuItem>
                   <MenuItem onClick={() => handleMenuClick('/register')}>Register</MenuItem>
                 </Menu>
