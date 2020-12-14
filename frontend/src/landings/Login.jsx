@@ -24,6 +24,9 @@ paper: {
 }));
 
 function Login() {
+  const login = () => {
+    console.log("login in");
+  }
   const classes = useStyles();
   return (
     <>
@@ -74,7 +77,7 @@ function Login() {
         //   minWidth: '100%', 
         //   minHeight: '100%'
         // }} 
-        type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>Login</Button>
+        type="submit" size="large" variant="contained" color="secondary" className={classes.submit} onClick={login} >Login</Button>
         </Grid>
       </Grid>
       </Paper>
