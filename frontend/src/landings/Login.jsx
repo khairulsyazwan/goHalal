@@ -1,7 +1,8 @@
-import React from 'react'
-import { Box, Button, Container, FormRow, Grid, Link, Paper, TextField } from '@material-ui/core';
+import React, { useState } from 'react'
+import { Box, Button, Grid, Link, Paper, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Axios from 'axios';
 
 
 // Material Theme
@@ -23,11 +24,31 @@ paper: {
   }
 }));
 
-function Login() {
-  const login = () => {
-    console.log("login in");
-  }
+const Login = () => {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  async function login(values) {
+    try {
+      let resp = await Axios.get("http://localhost:8000/api/v1/auth/get-user/<int:id>", formData);
+      localStorage.getItem('token', resp.data.token);
+      localStorage.getItem('userId', resp.data.user.id);
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    login()
+  }
+  console.log(login)
+  
+
   return (
     <>
       <Box m={8}>
@@ -52,6 +73,7 @@ function Login() {
           label="Email Address"
           name="email"
           autoComplete="email"
+          onChange={onChange}
           autoFocus
         />
         </Grid>
@@ -77,7 +99,15 @@ function Login() {
         //   minWidth: '100%', 
         //   minHeight: '100%'
         // }} 
-        type="submit" size="large" variant="contained" color="secondary" className={classes.submit} onClick={login} >Login</Button>
+        type="submit" 
+        size="large" 
+        variant="contained" 
+        color="secondary" 
+        className={classes.submit} 
+        onClick={onSubmit} 
+        
+        
+        >Login</Button>
         </Grid>
       </Grid>
       </Paper>
@@ -87,3 +117,7 @@ function Login() {
 }
 
 export default Login
+// onKeyDown={e => {
+//   if (e.key === 'Enter') {
+//   handleSubmit();
+// }}
