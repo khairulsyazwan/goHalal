@@ -43,3 +43,15 @@ def all_restaurants(request):
     restaurant_serializer = RestaurantSerializer(restaurants, many=True)
 
     return Response({"restaurants": restaurant_serializer.data}, status=status.HTTP_200_OK) 
+
+# Get single Restaurant
+@api_view(['GET',])
+def single_restaurant(request, id):
+    try:
+        restaurant = Restaurant.objects.get(restaurant_id=id)
+    except Restaurant.DoesNotExist:
+        return Response({"Restaurant does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+    restaurant_serializer = RestaurantSerializer(restaurant)
+
+    return Response({"restaurant": restaurant_serializer.data}, status=status.HTTP_200_OK) 
