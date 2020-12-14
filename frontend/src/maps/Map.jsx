@@ -38,7 +38,7 @@ function Map() {
   };
 
   const ACoptions = {
-    types: ["address"],
+    types: ["geocode"],
     componentRestrictions: { country: "sg" },
   };
 
@@ -249,6 +249,7 @@ function Map() {
                 currentRestaurants.map((mark, index) => (
                   <li key={index} id={index + 1}>
                     <h2>{mark.name}</h2> <h3>{mark.distance}m away</h3>
+                    <h3>{mark.id}</h3>
                   </li>
                 ))}
             </ol>
