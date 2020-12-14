@@ -15,6 +15,7 @@ function App() {
     valid: false,
     refreshed: true,
   });
+  
   return (
     <BrowserRouter basename="/">
       <Header />

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'cloudinary',
+    'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -68,15 +69,17 @@ MIDDLEWARE = [
 ]
 
 cloudinary.config(
-  cloud_name = os.environ.get('duc92lclp'),
-  api_key = os.environ.get('496893592161112'),
-  api_secret = os.environ.get('kcEt5TTPFNWpWuOHWg6clafyky0'),
+  cloud_name = 'duc92lclp',
+  api_key = '496893592161112',
+  api_secret = 'kcEt5TTPFNWpWuOHWg6clafyky0',
   secure = True
 )
 
 # CORS_ORIGIN_WHITELIST = (
-#      'localhost:3000/'
+#      'localhost:3000/',
 # )
+
+# CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'halalfoodfinder.urls'
 
@@ -108,6 +111,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 
 # Password validation

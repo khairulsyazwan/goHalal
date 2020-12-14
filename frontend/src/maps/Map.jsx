@@ -26,6 +26,7 @@ function Map() {
   const [restaurantId, setRestaurantId] = useState([]);
   const [currentRestaurants, setCurrentRestaurants] = useState([]);
   const [locationMarker, setLocationMarker] = useState([]);
+  const [highlightedMarker, setHighlightedMarker] = useState();
 
   const containerStyle = {
     width: "100%",
@@ -38,7 +39,7 @@ function Map() {
   };
 
   const ACoptions = {
-    types: ["geocode"],
+    // types: ["geocode"],
     componentRestrictions: { country: "sg" },
   };
 
@@ -176,6 +177,7 @@ function Map() {
     return (
       <>
         <GoogleMap
+          highlightedMarker={center}
           mapContainerStyle={containerStyle}
           zoom={zoom}
           center={center}
@@ -239,6 +241,7 @@ function Map() {
                   lng: mark[2],
                 }}
                 title={mark[0]}
+                animation={google.maps.Animation.DROP}
               />
             ))}
         </GoogleMap>
