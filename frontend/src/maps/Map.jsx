@@ -38,7 +38,7 @@ function Map() {
   };
 
   const ACoptions = {
-    types: ["address"],
+    types: ["geocode"],
     componentRestrictions: { country: "sg" },
   };
 
