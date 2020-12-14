@@ -21,5 +21,5 @@ urlpatterns = [
     # === APIs ===
     path('api/v1/auth/', include('accounts.urls')),
     path('api/v1/reviews/', include('reviews.urls')),
-    path('api/v1/restaurants/', include('reviews.urls')),
+    path('api/v1/restaurants/', include('restaurants.urls')),
 ]

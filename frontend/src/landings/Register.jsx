@@ -23,6 +23,18 @@ paper: {
 
 const Register = () => {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    email: '',
+    username: '',
+    password: ''
+  });
+
+  const { name, email, password } = formData;
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+  }
 
   return (
         <>
