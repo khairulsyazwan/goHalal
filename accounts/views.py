@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import ModelBackend
 import cloudinary.api
 from .models import *
 from .serializers import *
@@ -41,7 +43,7 @@ def sign_out(request):
 
     return Response({"success": "Successfully logged out."}, status=status.HTTP_200_OK)
 
-# custom class to return user_id and token when logged in
+# custom method to return user_id and token when logged in
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -55,6 +57,18 @@ class CustomAuthToken(ObtainAuthToken):
             'token': token.key,
             'user_id': user.pk
         })
+# custom method to use email to login 
+class EmailBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        try:
+            user = UserModel.objects.get(email=username)
+        except UserModel.DoesNotExist:
+            return None
+        else:
+            if user.check_password(password):
+                return user
+        return None
 
 
 # === Users ===
