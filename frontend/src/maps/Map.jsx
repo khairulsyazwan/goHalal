@@ -7,17 +7,56 @@ import {
   Autocomplete,
   Marker,
 } from "@react-google-maps/api";
-// import mapStyle from "./MapStyle";
+import mapStyle from "./MapStyle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 // import { locations } from "./rest-arr";
-import { Button } from "@material-ui/core";
+import { Button, FormControl } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 /* global google */
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  cardMedia: {
+    height: "300px",
+    paddingTop: "56.25%", // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+}));
 
 function Map() {
   const [libraries, setlibraries] = useState(["places"]);
@@ -53,6 +92,7 @@ function Map() {
     },
   }));
 
+  const classes = useStyles();
   async function getRestaurants() {
     try {
       let resp = await axios.get("http://localhost:8000/api/v1/restaurants/");
@@ -81,12 +121,12 @@ function Map() {
 
   const containerStyle = {
     width: "100%",
-    height: "70vh",
+    height: "50vh",
   };
 
   const options = {
-    // styles: mapStyle,
-    disableDefaultUI: false,
+    styles: mapStyle,
+    disableDefaultUI: true,
   };
 
   const ACoptions = {
@@ -244,16 +284,16 @@ function Map() {
           >
             <input
               type="text"
-              placeholder="Customized your placeholder"
+              placeholder="Enter your location here"
               style={{
                 boxSizing: `border-box`,
                 border: `1px solid transparent`,
-                width: `240px`,
-                height: `32px`,
+                width: `250px`,
+                height: `40px`,
                 padding: `0 12px`,
                 borderRadius: `3px`,
                 boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                fontSize: `14px`,
+                fontSize: `20px`,
                 outline: `none`,
                 textOverflow: `ellipses`,
                 position: "absolute",
@@ -304,22 +344,45 @@ function Map() {
               />
             ))}
         </GoogleMap>
-        <Grid container spacing={3}>
-          {currentRestaurants.length != 0 &&
-            currentRestaurants.map((mark, index) => (
-              <Grid item md={3} onClick={() => hello(mark.id)}>
-                <Paper key={index} id={mark.id}>
-                  <img src={mark.picture} alt="picture here" />
-                  <h2>{mark.name}</h2>
-                  <h3>{mark.address}</h3>
-                  <h3>{mark.distance}m away</h3>
-                  <NavLink to={`/restaurant/${mark.id}`}>
-                    <p>View Hafiz</p>{" "}
-                  </NavLink>
-                </Paper>
+
+        <Container className={classes.cardGrid} maxWidth="md">
+          {/* End hero unit */}
+          <Grid container spacing={4}>
+            {currentRestaurants.map((card) => (
+              <Grid
+                item
+                key={card}
+                xs={12}
+                sm={6}
+                md={4}
+                onClick={() => hello(card.id)}
+              >
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/user/mockupgraphics"
+                    title="restaurant"
+                  />
+                  <img src={card.picture} alt="recipe thumbnail" />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {card.name}
+                    </Typography>
+                    <Typography>{card.address}</Typography>
+                    <Typography>{card.distance}m away</Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      <NavLink to={`/restaurant/${card.id}`}>
+                        <p>View Restaurant</p>{" "}
+                      </NavLink>
+                    </Button>
+                  </CardActions>
+                </Card>
               </Grid>
             ))}
-        </Grid>
+          </Grid>
+        </Container>
       </>
     );
   };

@@ -1,13 +1,16 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import { Button } from "@material-ui/core";
 
 function Home() {
   return (
     <>
       <Grid container justify="center" alignItems="center">
         <Grid
-          item
+          container
+          justify="center"
+          alignItems="center"
           md={7}
           style={{
             backgroundImage:
@@ -16,15 +19,24 @@ function Home() {
             width: "100vw",
           }}
         >
-          <Typography variant="h1" component="h2" align="center">
-            Mr Hafiz
-          </Typography>
+          <Grid item>
+            <Typography variant="h1" component="h2" align="center">
+              Title here
+            </Typography>
+          </Grid>
         </Grid>
 
-        <Grid item md={5}>
-          <Typography variant="h3" component="h2" align="center">
-            Find halal certified food in your area.
-          </Typography>
+        <Grid container md={5} justify="center" alignItems="center">
+          <Grid item>
+            <Typography variant="h3" component="h2" align="center">
+              Find halal certified food in your area.
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="primary">
+              Find Now
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </>
