@@ -1,7 +1,9 @@
-import React from 'react'
-import { Box, Button, Container, FormRow, Grid, Link, Paper, TextField } from '@material-ui/core';
+import React, { useState } from 'react'
+import { Box, Button, Grid, Link, Paper, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import {Redirect} from 'react-router-dom';
+import Axios from 'axios';
 
 
 // Material Theme
@@ -23,11 +25,36 @@ paper: {
   }
 }));
 
-function Login() {
-  const login = () => {
-    console.log("login in");
-  }
+const Login = () => {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [success, setSuccess] = useState(false);
+
+  async function login(values) {
+    try {
+      let resp = await Axios.post("http://localhost:8000/api/v1/auth/signin/", formData);
+      localStorage.setItem('token', resp.data.token);
+      localStorage.setItem('userId', resp.data.user_id);
+      setSuccess(true);
+
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    login()
+  }
+  
+  if (success || localStorage.getItem('token') != null){
+    return <Redirect to="/" />;
+  }
+  
   return (
     <>
       <Box m={8}>
@@ -50,8 +77,9 @@ function Login() {
           fullWidth
           id="email"
           label="Email Address"
-          name="email"
+          name="username"
           autoComplete="email"
+          onChange={onChange}
           autoFocus
         />
         </Grid>
@@ -67,6 +95,7 @@ function Login() {
           type="password"
           id="password"
           autoComplete="current-password"
+          onChange={onChange}
         />
         </Grid>
       <Grid item xs={12} md={10}>
@@ -77,7 +106,15 @@ function Login() {
         //   minWidth: '100%', 
         //   minHeight: '100%'
         // }} 
-        type="submit" size="large" variant="contained" color="secondary" className={classes.submit} onClick={login} >Login</Button>
+        type="submit" 
+        size="large" 
+        variant="contained" 
+        color="secondary" 
+        className={classes.submit} 
+        onClick={onSubmit} 
+        
+        
+        >Login</Button>
         </Grid>
       </Grid>
       </Paper>
@@ -87,3 +124,7 @@ function Login() {
 }
 
 export default Login
+// onKeyDown={e => {
+//   if (e.key === 'Enter') {
+//   handleSubmit();
+// }}
