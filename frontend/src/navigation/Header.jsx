@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
     // alignContent: 'flex-start',
     // justifyContent: 'space-evenly'
   },
+  // headerMid: {
+  //   display: 'flex',
+  //   flex: 1,
+  //   justifyContent: 'center'
+  // },
   headerOptions2: {
     display: "flex",
     flex: 1,

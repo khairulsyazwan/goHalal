@@ -143,4 +143,54 @@ def delete_user(request, id):
         user.delete()
         return Response({"Deleted user successfully"}, status=status.HTTP_204_NO_CONTENT)
     else:
-        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Favourite Restaurant
+@csrf_exempt
+@api_view(['POST',])
+@permission_classes([IsAuthenticated])
+def favourite_restaurant(request, user_id, restaurant_id):
+    if request.method == 'POST':
+        try:
+            user = UserProfile.objects.get(pk=user_id)
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            restaurant = Restaurant.objects.get(pk=restaurant_id)
+        except Restaurant.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    restaurant.users.add(user)
+    user.favourites.add(restaurant)
+
+    restaurant.save()
+    user.save()
+    
+
+    return Response({"Successfully favourited restaurant"}, status=status.HTTP_200_OK)
+
+# Unfavourite Restaurant
+@csrf_exempt
+@api_view(['POST',])
+@permission_classes([IsAuthenticated])
+def unfavourite_restaurant(request, user_id, restaurant_id):
+    if request.method == 'POST':
+        try:
+            user = UserProfile.objects.get(pk=user_id)
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            restaurant = Restaurant.objects.get(pk=restaurant_id)
+        except Restaurant.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    restaurant.users.remove(user)
+    user.favourites.remove(restaurant)
+
+    restaurant.save()
+    user.save()
+    
+
+    return Response({"Successfully unfavourited restaurant"}, status=status.HTTP_200_OK)
