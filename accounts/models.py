@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from cloudinary.models import CloudinaryField
-
+from restaurants.models import *
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -15,8 +15,7 @@ class User(AbstractUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     profile_pic = CloudinaryField('image', default="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg")
-    # reviews = models.ManyToManyField()
-    # favourites = models.ManyToManyField()
+    favourites = models.ManyToManyField(Restaurant, related_name="users", blank=True)
 
     def __str__(self):
         return self.user.username
