@@ -143,7 +143,7 @@ def delete_user(request, id):
         user.delete()
         return Response({"Deleted user successfully"}, status=status.HTTP_204_NO_CONTENT)
     else:
-        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Favourite Restaurant
 @csrf_exempt
