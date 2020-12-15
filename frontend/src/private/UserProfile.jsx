@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Avatar, Button, Typography, Paper, Grid } from "@material-ui/core/";
+import { Avatar, Button, Box, Typography, Paper, Grid } from "@material-ui/core/";
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -15,9 +15,8 @@ import { makeStyles } from "@material-ui/core/styles";
 // Material Theme
 
 const useStyles = makeStyles((theme) => ({
-// root: {
-//   backgroundColor: "#343432"
-// },
+// spacing: [0, 2, 3, 5, 8],
+
 large: {
   margin: "5%",
   padding: "80px",
@@ -123,11 +122,15 @@ const UserProfile = () => {
 </Grid> */}
         <Card className={classes.root}>
           {/* <CardActionArea> */}
+          <Grid className={classes.cardlinks} container spacing={2}>
+            <Grid item xs={12} md={1}></Grid>
+            <Grid item xs={12} md={2}>
             <CardMedia/>
             <Avatar alt="avatar" src="/static/images/avatar/1.jpg" className={classes.large} />
           <CardContent>
           {/* wadafok here m8 */}
             {/* <div className={classes.user}> */}
+            <Box ml={5}>
           <Typography gutterBottom variant="h5" component="h2">
             Username
           </Typography>
@@ -138,8 +141,11 @@ const UserProfile = () => {
             color="secondary" 
             >Edit Profile
           </Button>
+            </Box>
             {/* </div> */}
           </CardContent>
+            </Grid>
+          </Grid>
         {/* </CardActionArea> */}
         </Card>
         {/* links to view */}
