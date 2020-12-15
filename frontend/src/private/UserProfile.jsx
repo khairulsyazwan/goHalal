@@ -6,6 +6,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from "@material-ui/core/styles";
+import AppFooter from '../modules/views/AppFooter';
+
 
 // import Axios from 'axios';
 
@@ -200,7 +202,7 @@ const UserProfile = () => {
             
           </Grid>
         </Grid>
-        
+        <AppFooter />
     </>
   )
 }

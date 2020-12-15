@@ -69,8 +69,8 @@ const LANGUAGES = [
     name: 'English',
   },
   {
-    code: 'fr-FR',
-    name: 'Français',
+    // code: 'fr-FR',
+    // name: 'Français',
   },
 ];
 
