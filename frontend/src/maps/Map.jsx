@@ -25,6 +25,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 
 /* global google */
+/* global google */
 
 const useStyles = makeStyles((theme) => ({
   icon: {
