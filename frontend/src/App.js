@@ -10,6 +10,7 @@ import Home from "./landings/Home";
 import PrivateRoute from "./private/PrivateRoute";
 import Map from "./maps/Map";
 import Restaurant from "./pages/Restaurant";
+import AllRestaurants from "./pages/AllRestaurants";
 
 function App() {
   const [valid, setValid] = useState({
@@ -24,11 +25,17 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
+
         <Route path="/login">
           <Login />
         </Route>
+
         <Route path="/register">
           <Register />
+        </Route>
+
+        <Route path="/all-restaurants">
+          <AllRestaurants />
         </Route>
 
         <Route path="/map">
