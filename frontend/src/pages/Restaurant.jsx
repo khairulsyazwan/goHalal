@@ -3,6 +3,8 @@ import { NavLink, useParams, Redirect } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Grid } from "@material-ui/core";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import Chip from "@material-ui/core/Chip";
 
 function Restaurant() {
   const [single, setSingle] = useState({});
@@ -35,9 +37,7 @@ function Restaurant() {
         <div className="container">
           <div>
             <h1>{single.info.name}</h1>
-            <span class="badge rounded-pill bg-success">
-              {single.info.cuisine}
-            </span>
+            <Chip label={single.info.cuisine} />
             <h4>{single.info.address}</h4>
           </div>
 
@@ -46,6 +46,7 @@ function Restaurant() {
           <hr />
           <div>
             <h2>Reviews</h2>
+            <AddBoxIcon />
           </div>
         </div>
       </>

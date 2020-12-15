@@ -121,7 +121,7 @@ function Map() {
 
   const containerStyle = {
     width: "100%",
-    height: "70vh",
+    height: "50vh",
   };
 
   const options = {
@@ -383,27 +383,6 @@ function Map() {
             ))}
           </Grid>
         </Container>
-
-        {/* <div className="container">
-          <div className="row">
-            {currentRestaurants.length != 0 &&
-              currentRestaurants.map((mark, index) => (
-                <div
-                  className="col-md-4"
-                  key={index}
-                  id={mark.id}
-                  onClick={() => hello(mark.id)}
-                  justify-content
-                >
-                  <img src={mark.picture} alt="picture here" />
-                  <h2>{mark.name}</h2>
-                  <h3>{mark.address}</h3>
-                  <h3>{mark.distance}m away</h3>
-
-                </div>
-              ))}
-          </div>
-        </div> */}
       </>
     );
   };
