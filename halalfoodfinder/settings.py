@@ -135,6 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "accounts.User"
+AUTHENTICATION_BACKENDS = ['accounts.views.EmailBackend']
 
 
 # Internationalization

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Box, Button, Grid, Link, Paper, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import {Redirect} from 'react-router-dom';
 import Axios from 'axios';
 
 
@@ -30,12 +31,15 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const [success, setSuccess] = useState(false);
 
   async function login(values) {
     try {
-      let resp = await Axios.get("http://localhost:8000/api/v1/auth/get-user/<int:id>", formData);
-      localStorage.getItem('token', resp.data.token);
-      localStorage.getItem('userId', resp.data.user.id);
+      let resp = await Axios.post("http://localhost:8000/api/v1/auth/signin/", formData);
+      localStorage.setItem('token', resp.data.token);
+      localStorage.setItem('userId', resp.data.user_id);
+      setSuccess(true);
+
     } catch (error) {
       console.log(error.response);
     }
@@ -46,9 +50,11 @@ const Login = () => {
   const onSubmit = (e) => {
     login()
   }
-  console.log(login)
   
-
+  if (success || localStorage.getItem('token') != null){
+    return <Redirect to="/" />;
+  }
+  
   return (
     <>
       <Box m={8}>
@@ -71,7 +77,7 @@ const Login = () => {
           fullWidth
           id="email"
           label="Email Address"
-          name="email"
+          name="username"
           autoComplete="email"
           onChange={onChange}
           autoFocus
@@ -89,6 +95,7 @@ const Login = () => {
           type="password"
           id="password"
           autoComplete="current-password"
+          onChange={onChange}
         />
         </Grid>
       <Grid item xs={12} md={10}>
