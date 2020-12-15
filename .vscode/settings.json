@@ -1,4 +1,5 @@
 {
     "python.formatting.provider": "yapf",
     "python.pythonPath": "/home/saifm/.pyenv/versions/3.9.0/bin/python"
+
 }
