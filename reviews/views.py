@@ -18,19 +18,14 @@ from .serializers import *
 @api_view(['POST',])
 @permission_classes([IsAuthenticated])
 def post_review(request, user_id, restaurant_id):
-
     try:
         user = User.objects.get(pk=user_id)
-
     except User.DoesNotExist:
-
         return Response({"user not found"}, status=status.HTTP_404_NOT_FOUND)
 
     try:
         restaurant = Restaurant.objects.get(pk=restaurant_id)
-
     except Restaurant.DoesNotExist:
-        
         return Response({"restaurant not found"}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':
@@ -53,12 +48,9 @@ def post_review(request, user_id, restaurant_id):
 # Get Reviews
 @api_view(['GET',])
 def get_reviews(request, restaurant_id):
-    try:
-
+    try: 
         reviews = Review.objects.filter(restaurant_id=restaurant_id)
-
     except Review.DoesNotExist:
-
         return Response({"No reviews yet"}, status=status.HTTP_404_NOT_FOUND)
     
     serializer = ReviewSerializer(reviews, many=True)
