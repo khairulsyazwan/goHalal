@@ -11,7 +11,6 @@ import PrivateRoute from "./private/PrivateRoute";
 import Map from "./maps/Map";
 import Restaurant from "./pages/Restaurant";
 import AllRestaurants from "./pages/AllRestaurants";
-import Paginate from "./pages/Paginate";
 import UserProfile from "./private/UserProfile";
 import NewHome from "./landings/NewHome";
 
@@ -51,10 +50,6 @@ function App() {
 
         <Route path="/restaurant/:id">
           <Restaurant />
-        </Route>
-
-        <Route path="/paginate">
-          <Paginate />
         </Route>
       </Switch>
     </BrowserRouter>

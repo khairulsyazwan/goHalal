@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { computeDistanceBetween } from "spherical-geometry-js";
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import {
   GoogleMap,
   useLoadScript,
@@ -10,7 +10,7 @@ import {
 import mapStyle from "./MapStyle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 // import { locations } from "./rest-arr";
-import { Button, FormControl } from "@material-ui/core";
+import { Backdrop, Button, FormControl, Link } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
@@ -22,6 +22,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Pagination from "@material-ui/lab/Pagination";
 
 /* global google */
 
@@ -121,7 +122,7 @@ function Map() {
 
   const containerStyle = {
     width: "100%",
-    height: "50vh",
+    height: "100vh",
   };
 
   const options = {
@@ -264,46 +265,63 @@ function Map() {
 
   function hello(id) {
     setHighlightedMarker("");
-    setHighlightedMarker(id);
-    console.log(highlightedMarker);
+    setHighlightedMarker(`mark-${id}`);
+  }
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = currentRestaurants.slice(
+    indexOfFirstPost,
+    indexOfLastPost
+  );
+  const pageNumbers = Math.ceil(currentRestaurants.length / postsPerPage);
+
+  // Change page
+  function paginate(e) {
+    setCurrentPage(parseInt(e.target.innerText));
   }
 
   const renderMap = () => {
     return (
       <>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          zoom={zoom}
-          center={center}
-          options={options}
-        >
-          <Autocomplete
-            onLoad={onLoad}
-            onPlaceChanged={onPlaceChanged}
-            options={ACoptions}
-          >
-            <input
-              type="text"
-              placeholder="Enter your location here"
-              style={{
-                boxSizing: `border-box`,
-                border: `1px solid transparent`,
-                width: `250px`,
-                height: `40px`,
-                padding: `0 12px`,
-                borderRadius: `3px`,
-                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                fontSize: `20px`,
-                outline: `none`,
-                textOverflow: `ellipses`,
-                position: "absolute",
-                left: "50%",
-                marginLeft: "-120px",
-              }}
-            />
-          </Autocomplete>
+        <Grid container>
+          <Grid item md={5}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              zoom={zoom}
+              center={center}
+              options={options}
+            >
+              <Autocomplete
+                onLoad={onLoad}
+                onPlaceChanged={onPlaceChanged}
+                options={ACoptions}
+              >
+                <input
+                  type="text"
+                  placeholder="Enter your location here"
+                  style={{
+                    boxSizing: `border-box`,
+                    border: `1px solid transparent`,
+                    width: `250px`,
+                    height: `40px`,
+                    padding: `0 12px`,
+                    borderRadius: `3px`,
+                    boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                    fontSize: `20px`,
+                    outline: `none`,
+                    textOverflow: `ellipses`,
+                    position: "absolute",
+                    left: "50%",
+                    marginLeft: "-120px",
+                  }}
+                />
+              </Autocomplete>
 
-          {/* <Button
+              {/* <Button
             onClick={getLocation}
             variant="contained"
             color="primary"
@@ -323,66 +341,77 @@ function Map() {
             Get my location
           </Button> */}
 
-          {locationMarker && <Marker />}
+              {locationMarker && <Marker />}
 
-          {markers.length != 0 &&
-            markers.map((mark, index) => (
-              <Marker
-                id={mark[3]}
-                key={index}
-                onLoad={onLoadMarker}
-                position={{
-                  lat: mark[1],
-                  lng: mark[2],
-                }}
-                title={mark[0]}
-                animation={
-                  highlightedMarker === mark[3]
-                    ? google.maps.Animation.BOUNCE
-                    : ""
-                }
-              />
-            ))}
-        </GoogleMap>
-
-        <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {currentRestaurants.map((card) => (
-              <Grid
-                item
-                key={card}
-                xs={12}
-                sm={6}
-                md={4}
-                onClick={() => hello(card.id)}
-              >
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/user/mockupgraphics"
-                    title="restaurant"
+              {markers.length != 0 &&
+                markers.map((mark, index) => (
+                  <Marker
+                    id={`mark-${mark[3]}`}
+                    key={`mark-${index}`}
+                    onLoad={onLoadMarker}
+                    position={{
+                      lat: mark[1],
+                      lng: mark[2],
+                    }}
+                    title={mark[0]}
+                    animation={
+                      highlightedMarker === `mark-${mark[3]}`
+                        ? google.maps.Animation.BOUNCE
+                        : ""
+                    }
                   />
-                  <img src={card.picture} alt="recipe thumbnail" />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {card.name}
-                    </Typography>
-                    <Typography>{card.address}</Typography>
-                    <Typography>{card.distance}m away</Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary">
-                      <NavLink to={`/restaurant/${card.id}`}>
-                        <p>View Restaurant</p>{" "}
-                      </NavLink>
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+                ))}
+            </GoogleMap>
           </Grid>
-        </Container>
+
+          <Grid item md={7}>
+            <Container className={classes.cardGrid} maxWidth="md">
+              <Pagination
+                count={pageNumbers}
+                onChange={paginate}
+                page={currentPage}
+                siblingCount={1}
+                boundaryCount={1}
+                hideNextButton={true}
+                hidePrevButton={true}
+                color="primary"
+                style={{ margin: "20px" }}
+              />
+              <Grid container spacing={4}>
+                {currentPosts.map((card, index) => (
+                  <Grid
+                    item
+                    key={index}
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    onMouseOver={() => hello(card.id)}
+                  >
+                    <Card className={classes.card}>
+                      {/* <CardMedia
+                        className={classes.cardMedia}
+                        image="https://source.unsplash.com/user/mockupgraphics"
+                        title="restaurant"
+                      />
+                      <img src={card.picture} alt="recipe thumbnail" /> */}
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          <Link href={`/restaurant/${card.id}`}>
+                            {card.name}
+                          </Link>
+                        </Typography>
+                        <Typography>{card.address}</Typography>
+                        <Typography variant="button">
+                          {card.distance}m away
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </Grid>
+        </Grid>
       </>
     );
   };
@@ -391,7 +420,7 @@ function Map() {
     return <div>Map cannot be loaded right now, sorry.</div>;
   }
 
-  return isLoaded ? renderMap() : <CircularProgress />;
+  return isLoaded ? renderMap() : <CircularProgress color="inherit" />;
 }
 
 export default Map;

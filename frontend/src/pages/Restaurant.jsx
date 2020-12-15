@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useParams, Redirect } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Grid } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  FormHelperText,
+  Grid,
+  Input,
+  InputLabel,
+} from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import Chip from "@material-ui/core/Chip";
 
@@ -34,21 +43,34 @@ function Restaurant() {
   function renderPage() {
     return (
       <>
-        <div className="container">
-          <div>
-            <h1>{single.info.name}</h1>
-            <Chip label={single.info.cuisine} />
-            <h4>{single.info.address}</h4>
-          </div>
+        <Grid container>
+          <Grid item>
+            <Container>
+              <h1>
+                {single.info.name} <Chip label={single.info.cuisine} />
+              </h1>
 
-          <img src={single.info.picture} alt="" srcset="" />
-
-          <hr />
-          <div>
-            <h2>Reviews</h2>
-            <AddBoxIcon />
-          </div>
-        </div>
+              <h4>{single.info.address}</h4>
+              {/* <img src={single.info.picture} alt="" srcset="" /> */}
+            </Container>
+          </Grid>
+          <Grid item></Grid>
+        </Grid>
+        <Divider />
+        <Grid container>
+          <Container>
+            <h1>
+              Reviews <AddBoxIcon />
+            </h1>
+            <FormControl>
+              <InputLabel>Add your review</InputLabel>
+              <Input id="my-input" />
+              <Button variant="contained" color="primary">
+                Submit
+              </Button>
+            </FormControl>
+          </Container>
+        </Grid>
       </>
     );
   }
