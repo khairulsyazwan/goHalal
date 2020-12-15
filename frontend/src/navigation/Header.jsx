@@ -37,6 +37,11 @@ const useStyles = makeStyles((theme) => ({
     // alignContent: 'flex-start',
     // justifyContent: 'space-evenly'
   },
+  // headerMid: {
+  //   display: 'flex',
+  //   flex: 1,
+  //   justifyContent: 'center'
+  // },
   headerOptions2: {
     display: 'flex',
     flex: 1,
@@ -120,6 +125,9 @@ const Header = props => {
               <div className={classes.headerOptions}>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/')}>Home</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/map')}>Map</Button>
+                {/* <div className={classes.headerMid}>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/map')}>Logo</Button>
+                </div> */}
                 {/* <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/login')}>Login</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button> */}
               </div>

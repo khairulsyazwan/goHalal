@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, Paper, TextField } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Box, Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
+import AppFooter from '../modules/views/AppFooter';
 import { makeStyles } from '@material-ui/core/styles';
 import { Redirect, Link } from 'react-router-dom';
 import Axios from 'axios';
@@ -12,7 +12,7 @@ import * as Yup from "yup";
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: "100%",
-    margin: "30px",
+    margin: "40px",
   },
   paper: {
     padding: theme.spacing(5),
@@ -55,9 +55,6 @@ const Register = () => {
   if (success || localStorage.getItem('token') != null){
     return <Redirect to="/" />;
   }
-  
-
-  
 
   return (
     <>
@@ -170,6 +167,7 @@ const Register = () => {
           </Grid>
         </Grid>
       </Box>
+      <AppFooter />
     </>
   )
 }

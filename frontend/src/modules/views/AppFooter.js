@@ -11,7 +11,7 @@ function Copyright() {
     <>
       {'© '}
       <Link color="inherit" href="https://material-ui.com/">
-        It's Halal Bro
+        Let's Go Halal
       </Link>{' '}
       {new Date().getFullYear()}
     </>
@@ -69,8 +69,8 @@ const LANGUAGES = [
     name: 'English',
   },
   {
-    code: 'fr-FR',
-    name: 'Français',
+    // code: 'fr-FR',
+    // name: 'Français',
   },
 ];
 
