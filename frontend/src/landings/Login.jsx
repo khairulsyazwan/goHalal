@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Box, Button, Grid, Link, Paper, TextField } from '@material-ui/core';
+import { Box, Button, Grid, Paper, TextField } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import AppFooter from '../modules/views/AppFooter';
 import {Redirect} from 'react-router-dom';
 import Axios from 'axios';
 
@@ -119,6 +120,7 @@ const Login = () => {
       </Grid>
       </Paper>
       </Box>
+      <AppFooter />
     </>
   )
 }
