@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -29,17 +29,29 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   headerOptions: {
-    
-    // display: 'flex',
-    // flex: 1,
+    display: 'flex',
+    flex: 1,
     // justifyContent: 'flex-start',
     // flexDirection: 'row',
     // justifyContent: 'flex-start',
-    // alignContent: 'flex-start'
+    // alignContent: 'flex-start',
+    // justifyContent: 'space-evenly'
+  },
+  headerOptions2: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'flex-end',
+    // flexDirection: 'row',
+    // justifyContent: 'flex-start',
+    // alignContent: 'flex-start',
     // justifyContent: 'space-evenly'
   },
   button: {
-    margin: '30px'
+    margin: '10px',
+    // display: 'flex',
+    // flex: 1,
+    // flexDirection: 'row',
+    // justifyContent: 'flex-end',
   }
 }));
 
@@ -104,12 +116,20 @@ const Header = props => {
                 </Menu>
               </>
             ) : (
+              <>
               <div className={classes.headerOptions}>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/')}>Home</Button>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/map')}>Map</Button>
+                {/* <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/login')}>Login</Button>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button> */}
+              </div>
+              <div className={classes.headerOptions2}>
+                {/* <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/')}>Home</Button>
+                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/map')}>Map</Button> */}
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/login')}>Login</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button>
-                <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/map')}>Map</Button>
               </div>
+              </>
             ) 
           }
           {/* )} */}

@@ -6,10 +6,12 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from "./navigation/Header";
 import Register from "./landings/Register";
 import Login from "./landings/Login";
-import Home from "./landings/Home";
+// import Home from "./landings/Home";
 import PrivateRoute from "./private/PrivateRoute";
 import Map from "./maps/Map";
 import Restaurant from "./pages/Restaurant";
+import UserProfile from "./private/UserProfile";
+import NewHome from "./landings/NewHome";
 
 function App() {
   const [valid, setValid] = useState({
@@ -22,7 +24,7 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/">
-          <Home />
+          <NewHome />
         </Route>
         <Route path="/login">
           <Login />
@@ -33,6 +35,10 @@ function App() {
 
         <Route path="/map">
           <Map />
+        </Route>
+
+        <Route path="/user/:id">
+          <UserProfile />
         </Route>
 
         <Route path="/restaurant/:id">
