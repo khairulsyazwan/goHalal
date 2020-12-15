@@ -39,14 +39,29 @@ def post_review(request, user_id, restaurant_id):
         if serializer.is_valid():
 
             review = serializer.save()
-
             Review.calculate_average_rating(review)
 
             user.reviews.add(review)
             restaurant.reviews.add(review)
 
+            serializer.save()
+
             return Response({"review": serializer.data}, status=status.HTTP_201_CREATED)
         else:
             return Response({"errors": serializer._errors}, status=status.HTTP_400_BAD_REQUEST)
 
+# Get Reviews
+@api_view(['GET',])
+def get_reviews(request, restaurant_id):
+    try:
+
+        reviews = Review.objects.filter(restaurant_id=restaurant_id)
+
+    except Review.DoesNotExist:
+
+        return Response({"No reviews yet"}, status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = ReviewSerializer(reviews, many=True)
+
+    return Response({"reviews": serializer.data}, status=status.HTTP_200_OK)
 

@@ -2,7 +2,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 from restaurants.models import Restaurant
 from accounts.models import User
-import math
+
 
 
 class Review(models.Model):
@@ -22,7 +22,7 @@ class Review(models.Model):
         return self.review_title
     
     def calculate_average_rating(self):
-        self.average_rating = math.floor((self.taste_rating + self.service_rating + self.cleanliness_rating)/3)
+        self.average_rating = round((self.taste_rating + self.service_rating + self.cleanliness_rating)/3)
         return self.average_rating
 
     
