@@ -70,7 +70,7 @@ function Map() {
   });
   const [markers, setMarkers] = useState([]);
   const [currentRestaurants, setCurrentRestaurants] = useState([]);
-  const [locationMarker, setLocationMarker] = useState([]);
+  const [locationMarker, setLocationMarker] = useState();
   const [highlightedMarker, setHighlightedMarker] = useState("");
   const [locations, setLocations] = useState([]);
 
@@ -123,7 +123,7 @@ function Map() {
 
   const containerStyle = {
     width: "100%",
-    height: "100vh",
+    height: "90vh",
   };
 
   const options = {
@@ -253,6 +253,7 @@ function Map() {
           setMarkers(results);
           setCurrentRestaurants(curRes);
           setLocationMarker(pos);
+          // console.log(locationMarker);
         },
         () => {
           alert("Try again.");
@@ -287,9 +288,9 @@ function Map() {
 
   const renderMap = () => {
     return (
-      <>
-        <Grid container>
-          <Grid item md={5}>
+      <Container>
+        <Grid container style={{ margin: "20px" }}>
+          <Grid item md={6}>
             <GoogleMap
               mapContainerStyle={containerStyle}
               zoom={zoom}
@@ -303,7 +304,7 @@ function Map() {
               >
                 <input
                   type="text"
-                  placeholder="Enter your location here"
+                  placeholder="Enter your location here.."
                   style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
@@ -318,6 +319,7 @@ function Map() {
                     position: "absolute",
                     left: "50%",
                     marginLeft: "-120px",
+                    marginTop: "10px",
                   }}
                 />
               </Autocomplete>
@@ -342,7 +344,12 @@ function Map() {
             Get my location
           </Button> */}
 
-              {locationMarker && <Marker />}
+              {locationMarker && (
+                <Marker
+                  position={locationMarker}
+                  icon="http://maps.google.com/mapfiles/kml/paddle/wht-stars.png"
+                />
+              )}
 
               {markers.length != 0 &&
                 markers.map((mark, index) => (
@@ -365,55 +372,61 @@ function Map() {
             </GoogleMap>
           </Grid>
 
-          <Grid item md={7}>
-            <Container className={classes.cardGrid} maxWidth="md">
-              <Pagination
-                count={pageNumbers}
-                onChange={paginate}
-                page={currentPage}
-                siblingCount={1}
-                boundaryCount={1}
-                hideNextButton={true}
-                hidePrevButton={true}
-                color="primary"
-                style={{ margin: "20px" }}
-              />
-              <Grid container spacing={4}>
-                {currentPosts.map((card, index) => (
-                  <Grid
-                    item
-                    key={index}
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    onMouseOver={() => hello(card.id)}
-                  >
-                    <Card className={classes.card}>
-                      {/* <CardMedia
+          {currentPosts.length === 0 ? (
+            <Backdrop open="true">
+              <CircularProgress />
+            </Backdrop>
+          ) : (
+            <Grid item md={6}>
+              <Container className={classes.cardGrid} maxWidth="md">
+                <Pagination
+                  count={pageNumbers}
+                  onChange={paginate}
+                  page={currentPage}
+                  siblingCount={1}
+                  boundaryCount={1}
+                  hideNextButton={true}
+                  hidePrevButton={true}
+                  color="primary"
+                  style={{ margin: "20px" }}
+                />
+                <Grid container spacing={4}>
+                  {currentPosts.map((card, index) => (
+                    <Grid
+                      item
+                      key={index}
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      onMouseOver={() => hello(card.id)}
+                    >
+                      <Card className={classes.card}>
+                        {/* <CardMedia
                         className={classes.cardMedia}
                         image="https://source.unsplash.com/user/mockupgraphics"
                         title="restaurant"
                       />
                       <img src={card.picture} alt="recipe thumbnail" /> */}
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          <Link href={`/restaurant/${card.id}`}>
-                            {card.name}
-                          </Link>
-                        </Typography>
-                        <Typography>{card.address}</Typography>
-                        <Typography variant="button">
-                          {card.distance}m away
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Container>
-          </Grid>
+                        <CardContent className={classes.cardContent}>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            <Link href={`/restaurant/${card.id}`}>
+                              {card.name}
+                            </Link>
+                          </Typography>
+                          <Typography>{card.address}</Typography>
+                          <Typography variant="button">
+                            {card.distance}m away
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Container>
+            </Grid>
+          )}
         </Grid>
-      </>
+      </Container>
     );
   };
 
@@ -421,7 +434,13 @@ function Map() {
     return <div>Map cannot be loaded right now, sorry.</div>;
   }
 
-  return isLoaded ? renderMap() : <CircularProgress color="inherit" />;
+  return isLoaded ? (
+    renderMap()
+  ) : (
+    <Backdrop open="true">
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  );
 }
 
 export default Map;

@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams, Redirect } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {
+  Backdrop,
   Button,
   Container,
   Divider,
   FormControl,
-  FormHelperText,
   Grid,
   Input,
   InputLabel,
 } from "@material-ui/core";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import Chip from "@material-ui/core/Chip";
 
 function Restaurant() {
   const [single, setSingle] = useState({});
   const [isLoaded, setisLoaded] = useState(false);
+  const [reviews, setReviews] = useState();
+  const [formData, setFormData] = useState();
   let { id } = useParams();
+  let userId = localStorage.getItem("userId");
 
   useEffect(() => {
     getRestaurant();
+    getReviews();
     return () => {};
   }, []);
+
+  
 
   async function getRestaurant() {
     try {
@@ -34,15 +39,40 @@ function Restaurant() {
       // console.log(rest);
       setSingle({ info });
       setisLoaded(true);
-      console.log(single);
     } catch (err) {
       console.log(err.response);
     }
   }
 
+  async function getReviews() {
+    try {
+      let resp = await axios.get(`http://localhost:8000/api/v1/reviews/${id}`);
+      let rev = resp.data.reviews;
+      setReviews(rev);
+      // console.log(resp);
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+
+  async function postReview() {
+    try {
+      let resp = await axios.post(
+        `http://localhost:8000/api/v1/reviews/post/${userId}/${id}`,
+        formData
+      );
+      // console.log(resp);
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
   function renderPage() {
     return (
-      <>
+      <Container>
         <Grid container>
           <Grid item>
             <Container>
@@ -59,23 +89,20 @@ function Restaurant() {
         <Divider />
         <Grid container>
           <Container>
-            <h1>
-              Reviews <AddBoxIcon />
-            </h1>
-            <FormControl>
-              <InputLabel>Add your review</InputLabel>
-              <Input id="my-input" />
-              <Button variant="contained" color="primary">
-                Submit
-              </Button>
-            </FormControl>
+            <h1>Reviews</h1>
           </Container>
         </Grid>
-      </>
+      </Container>
     );
   }
 
-  return isLoaded ? renderPage() : <CircularProgress />;
+  return isLoaded ? (
+    renderPage()
+  ) : (
+    <Backdrop open="true">
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  );
 }
 
 export default Restaurant;
