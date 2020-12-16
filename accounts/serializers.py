@@ -1,4 +1,6 @@
 from .models import *
+from restaurants.models import *
+from restaurants.serializers import *
 from rest_framework import serializers
 
 
@@ -34,7 +36,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Profile Serializer
 class ProfileSerializer(serializers.ModelSerializer):
+    # favourites = RestaurantSerializer(read_only=True)
+    # restaurant_owned = RestaurantSerializer(read_only=True)
     class Meta:
         model = UserProfile
-        fields = ['profile_pic']
+        fields = '__all__'
 

@@ -63,6 +63,7 @@ def single_restaurant(request, id):
 # Update Restaurant
 @csrf_exempt
 @api_view(['PUT',])
+@permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['restaurant_owner'])
 def update_restaurant(request, restaurant_id, user_id):
     try:
@@ -75,8 +76,8 @@ def update_restaurant(request, restaurant_id, user_id):
     except UserProfile.DoesNotExist:
         return Response({"User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'PUT':
-    
+    if request.method == 'PUT' and user.restaurant_owned.get() == restaurant:
+        
         restaurant_serializer = RestaurantSerializer(instance=restaurant, data=request.data)
 
         if restaurant_serializer.is_valid():
