@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Backdrop,
-  Button,
   Container,
-  Divider,
-  FormControl,
   Grid,
-  Input,
-  InputLabel,
+  Typography,
+  Button,
 } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
+import TabPanel from "./TabPanel";
+import StarRateIcon from "@material-ui/icons/StarRate";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 
 function Restaurant() {
   const [single, setSingle] = useState({});
@@ -21,15 +22,48 @@ function Restaurant() {
   const [formData, setFormData] = useState();
   let { id } = useParams();
   let userId = localStorage.getItem("userId");
+  let token = localStorage.getItem("token");
 
   useEffect(() => {
     getRestaurant();
     getReviews();
+
     return () => {};
   }, []);
 
-  
+  function stars(num) {
+    if (num === 1) {
+      return <StarRateIcon />;
+    } else if (num === 2) {
+      return (
+        <>
+          <StarRateIcon /> <StarRateIcon />
+        </>
+      );
+    } else if (num === 3) {
+      return (
+        <>
+          <StarRateIcon /> <StarRateIcon /> <StarRateIcon />
+        </>
+      );
+    } else if (num === 4) {
+      return (
+        <>
+          <StarRateIcon /> <StarRateIcon /> <StarRateIcon />
+          <StarRateIcon />
+        </>
+      );
+    } else if (num === 5) {
+      return (
+        <>
+          <StarRateIcon /> <StarRateIcon /> <StarRateIcon />
+          <StarRateIcon /> <StarRateIcon />
+        </>
+      );
+    }
+  }
 
+  console.log(reviews);
   async function getRestaurant() {
     try {
       let resp = await axios.get(
@@ -55,44 +89,61 @@ function Restaurant() {
     }
   }
 
-  async function postReview() {
-    try {
-      let resp = await axios.post(
-        `http://localhost:8000/api/v1/reviews/post/${userId}/${id}`,
-        formData
-      );
-      // console.log(resp);
-    } catch (err) {
-      console.log(err.response);
-    }
-  }
+  const url =
+    "https://images.unsplash.com/photo-1546484613-910673d7d247?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const useStyles = makeStyles((theme) => ({
+    header: {
+      backgroundImage: `url(${url})`,
+      height: "30vh",
+      position: "center",
+      backgroundSize: "cover",
+    },
+  }));
+
+  const classes = useStyles();
 
   function renderPage() {
     return (
-      <Container>
-        <Grid container>
+      <>
+        <Grid
+          container
+          className={classes.header}
+          alignItems="center"
+          justify="center"
+        >
           <Grid item>
-            <Container>
-              <h1>
-                {single.info.name} <Chip label={single.info.cuisine} />
-              </h1>
+            <Grid container justify="center">
+              <Typography variant="h2" color="textSecondary">
+                {single.info.name}
+              </Typography>
+            </Grid>
 
-              <h4>{single.info.address}</h4>
-              {/* <img src={single.info.picture} alt="" srcset="" /> */}
-            </Container>
+            <Grid container justify="center">
+              <Typography align="center" variant="button" color="textSecondary">
+                {single.info.address.toUpperCase()}
+              </Typography>
+            </Grid>
+            <Grid container justify="center" style={{ marginTop: "5px" }}>
+              <Chip label={single.info.cuisine} style={{ padding: "10px" }} />
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              style={{ marginTop: "5px", marginBottom: "5px" }}
+            >
+              <Button>
+                <ThumbUpIcon fontSize="large" color="action" />
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item></Grid>
         </Grid>
-        <Divider />
         <Grid container>
           <Container>
-            <h1>Reviews</h1>
+            <TabPanel reviews={reviews} id={id} token={token} stars={stars} />
           </Container>
         </Grid>
-      </Container>
+      </>
     );
   }
 

@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { computeDistanceBetween } from "spherical-geometry-js";
-import { NavLink, Redirect } from "react-router-dom";
 import {
   GoogleMap,
   useLoadScript,
@@ -9,22 +8,16 @@ import {
 } from "@react-google-maps/api";
 import mapStyle from "./MapStyle";
 import CircularProgress from "@material-ui/core/CircularProgress";
-// import { locations } from "./rest-arr";
-import { Backdrop, Button, FormControl, Link } from "@material-ui/core";
+import { Backdrop, Link } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 
-/* global google */
 /* global google */
 
 const useStyles = makeStyles((theme) => ({
@@ -117,12 +110,8 @@ function Map() {
     }
   }
 
-  function setDrop(id) {
-    window.alert("id");
-  }
-
   const containerStyle = {
-    width: "100%",
+    width: "600px",
     height: "90vh",
   };
 
@@ -256,12 +245,14 @@ function Map() {
           // console.log(locationMarker);
         },
         () => {
-          alert("Try again.");
+          alert(
+            "Whoops! Something went wrong. Enable your location or enter it."
+          );
         }
       );
     } else {
       // Browser doesn't support Geolocation
-      alert("Try again.");
+      alert("Whoops! Something went wrong. Enable your location or enter it.");
     }
   }
 

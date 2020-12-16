@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { NavLink } from "react-router-dom";
-import {
-  Button,
-  Container,
-  FormControl,
-  FormHelperText,
-  Grid,
-  Input,
-  InputLabel,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Container, Grid, TextField, Typography } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import Pages from "./Pages";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 
 function AllRestaurants() {
@@ -37,10 +26,6 @@ function AllRestaurants() {
     return () => {};
   }, []);
 
-  function clearRestaurants() {
-    setLocations([]);
-  }
-
   async function getRestaurants() {
     try {
       let resp = await axios.get("http://localhost:8000/api/v1/restaurants/");
@@ -50,19 +35,6 @@ function AllRestaurants() {
     } catch (err) {
       console.log(err.response);
     }
-  }
-
-  function renderLocations() {
-    return (
-      <ol>
-        {locations.map((rest, index) => (
-          <li key={index}>
-            {rest.name} <br /> {rest.address} <br />{" "}
-            <NavLink to={`/restaurant/${rest.id}`}>View</NavLink>
-          </li>
-        ))}
-      </ol>
-    );
   }
 
   const url =
@@ -75,12 +47,29 @@ function AllRestaurants() {
       position: "center",
       backgroundSize: "cover",
     },
+    option: {
+      fontSize: 15,
+      "& > span": {
+        marginRight: 10,
+        fontSize: 18,
+      },
+    },
   }));
 
   const classes = useStyles();
 
-  function submit() {
-    alert("test");
+  function submit(e, values) {
+    let results = [];
+    if (values != null) {
+      for (let index = 0; index < locations.length; index++) {
+        if (values.name == locations[index].name) {
+          results.push(locations[index]);
+        }
+      }
+      setLocations(results);
+    } else {
+      getRestaurants();
+    }
   }
 
   return (
@@ -103,13 +92,37 @@ function AllRestaurants() {
 
       <Grid container alignItems="center" justify="center">
         <Grid item>
-          {/* <FormControl >
-            <InputLabel htmlFor="my-input">Restaurant Name</InputLabel>
-            <Input id="my-input" aria-describedby="my-helper-text" />
-            <FormHelperText id="my-helper-text">
-              We'll never share your email.
-            </FormHelperText>
-          </FormControl> */}
+          <Grid
+            container
+            style={{ marginTop: "10px", marginBottom: "10px" }}
+            justify="center"
+          >
+            <Autocomplete
+              id="restaurant select"
+              style={{ width: 300 }}
+              options={locations}
+              classes={{
+                option: classes.option,
+              }}
+              onChange={submit}
+              autoHighlight
+              getOptionLabel={(option) => option.name}
+              renderOption={(option) => (
+                <React.Fragment>{option.name}</React.Fragment>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Enter restaurant name"
+                  variant="outlined"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: "new-password",
+                  }}
+                />
+              )}
+            />
+          </Grid>
 
           <Pagination
             count={pageNumbers}
