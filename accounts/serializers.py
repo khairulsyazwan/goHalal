@@ -1,4 +1,7 @@
 from .models import *
+from restaurants.models import *
+from restaurants.serializers import *
+from django.contrib.auth.models import Group
 from rest_framework import serializers
 
 
@@ -25,7 +28,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         return user
 
-
 # User Serializer
 class UserSerializer(serializers.ModelSerializer): 
     class Meta:
@@ -34,7 +36,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Profile Serializer
 class ProfileSerializer(serializers.ModelSerializer):
+    restaurant_owned = RestaurantSerializer(read_only=True)
     class Meta:
         model = UserProfile
-        fields = ['profile_pic']
+        fields = '__all__'
 
+# Group Serializer
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ['name']
