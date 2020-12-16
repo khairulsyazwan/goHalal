@@ -1,10 +1,14 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated
 from .resources import RestaurantResource
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from tablib import Dataset
 from .models import *
+from accounts.models import *
+from .decorators import *
 from .serializers import *
 from os import path
 import csv
@@ -55,3 +59,36 @@ def single_restaurant(request, id):
     restaurant_serializer = RestaurantSerializer(restaurant)
 
     return Response({"restaurant": restaurant_serializer.data}, status=status.HTTP_200_OK) 
+
+
+# === Restaurant Owner ===
+
+# Update Restaurant
+@csrf_exempt
+@api_view(['PUT',])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['restaurant_owner'])
+def update_restaurant(request, restaurant_id, user_id):
+    try:
+        restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
+    except Restaurant.DoesNotExist:
+        return Response({"Restaurant does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        user = UserProfile.objects.get(user_id=user_id)
+    except UserProfile.DoesNotExist:
+        return Response({"User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT' and user.restaurant_owned.get() == restaurant:
+        
+        restaurant_serializer = RestaurantSerializer(instance=restaurant, data=request.data)
+
+        if restaurant_serializer.is_valid():
+            restaurant_serializer.save()
+            return Response(restaurant_serializer.data, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(restaurant_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"You are not allowed to edit this"})
+
+

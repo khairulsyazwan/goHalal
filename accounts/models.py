@@ -16,6 +16,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     profile_pic = CloudinaryField('image', default="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg")
     favourites = models.ManyToManyField(Restaurant, related_name="users", blank=True)
+    restaurant_owned = models.ManyToManyField(Restaurant, related_name="owners", blank=True)
 
     def __str__(self):
         return self.user.username
