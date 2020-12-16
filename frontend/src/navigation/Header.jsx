@@ -197,7 +197,7 @@ const Header = (props) => {
                     >
                       Logout
                     </Button>
-                    <Button disabled className={classes.button} variant="text">
+                    <Button className={classes.button} variant="text" onClick={() => handleButtonClick(`/user/{int:id}`)}>
                       Logged in as: {username}
                     </Button>
                   </div>
