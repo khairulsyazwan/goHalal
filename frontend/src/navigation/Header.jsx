@@ -153,6 +153,7 @@ const Header = (props) => {
           ) : (
             <>
               <div className={classes.headerOptions}>
+
                 <Button
                   className={classes.button}
                   variant="text"
@@ -167,6 +168,7 @@ const Header = (props) => {
                 >
                   Find Nearby
                 </Button>
+
                 <Button
                   className={classes.button}
                   variant="text"
@@ -174,6 +176,7 @@ const Header = (props) => {
                 >
                   All Restaurants
                 </Button>
+
                 {/* <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/login')}>Login</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button> */}
               </div>

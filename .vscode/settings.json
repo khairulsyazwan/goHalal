@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-    "python.formatting.provider": "autopep8",
-    "python.pythonPath": "/Users/khairulsyazwan/.pyenv/shims/python"
-=======
     "python.formatting.provider": "yapf",
     "python.pythonPath": "/home/saifm/.pyenv/versions/3.9.0/bin/python"
->>>>>>> 441a93ef1526135320ec1ad93535d59c7382b97e
+
 }
