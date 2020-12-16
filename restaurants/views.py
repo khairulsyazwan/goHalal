@@ -55,3 +55,4 @@ def single_restaurant(request, id):
     restaurant_serializer = RestaurantSerializer(restaurant)
 
     return Response({"restaurant": restaurant_serializer.data}, status=status.HTTP_200_OK) 
+

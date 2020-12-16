@@ -38,7 +38,6 @@ class Restaurant(models.Model):
     lat = models.FloatField()
     lng = models.FloatField()
     restaurant_id = models.IntegerField(null=True)
-    # reviews = models.ManyToManyField()
 
     def __str__(self):
         return self.name

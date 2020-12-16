@@ -1,5 +1,5 @@
 {
     "python.formatting.provider": "yapf",
-    "python.pythonPath": "/home/saifm/.pyenv/versions/3.9.0/bin/python"
+    "python.pythonPath": "/home/saifm/.local/share/virtualenvs/halalfoodfinder-d6zDd7nr/bin/python"
 
 }

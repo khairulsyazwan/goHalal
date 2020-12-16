@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import logout, login
+from django.contrib.auth.models import Group
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -26,6 +27,9 @@ def sign_up(request):
         if serializer.is_valid():
 
             user = serializer.save()
+
+            group = Group.objects.get(name='normal_user')
+            user.groups.add(group)
 
             login(request, user)
 
