@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import "./index.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -7,12 +7,15 @@ import Header from "./navigation/Header";
 import Register from "./landings/Register";
 import Login from "./landings/Login";
 // import Home from "./landings/Home";
-import PrivateRoute from "./private/PrivateRoute";
+// import PrivateRoute from "./private/PrivateRoute";
 import Map from "./maps/Map";
 import Restaurant from "./pages/Restaurant";
 import AllRestaurants from "./pages/AllRestaurants";
 import UserProfile from "./private/UserProfile";
 import NewHome from "./landings/NewHome";
+import RestaurantUser from "./landings/RestaurantUser";
+import SignIn from "./landings/Signin";
+import SignUp from "./landings/Signup";
 
 function App() {
   const [valid, setValid] = useState({
@@ -30,6 +33,14 @@ function App() {
 
         <Route path="/login">
           <Login />
+        </Route>
+
+        <Route path="/signin">
+          <SignIn />
+        </Route>
+
+        <Route path="/signup">
+          <SignUp />
         </Route>
 
         <Route path="/register">
@@ -50,6 +61,10 @@ function App() {
 
         <Route path="/restaurant/:id">
           <Restaurant />
+        </Route>
+
+        <Route path="/restaurantuser">
+          <RestaurantUser />
         </Route>
       </Switch>
     </BrowserRouter>
