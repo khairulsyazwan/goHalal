@@ -60,6 +60,9 @@ def single_restaurant(request, id):
 
     return Response({"restaurant": restaurant_serializer.data}, status=status.HTTP_200_OK) 
 
+
+# === Restaurant Owner ===
+
 # Update Restaurant
 @csrf_exempt
 @api_view(['PUT',])
