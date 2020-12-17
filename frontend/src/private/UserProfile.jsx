@@ -55,7 +55,7 @@ const UserProfile = (props) => {
   const classes = useStyles();
 
   const username = localStorage.getItem('username');
-  console.log("username", username)
+  console.log("username = ", username)
   let Id = localStorage.getItem("userId");
   console.log("user Id = ", Id)
   const token = localStorage.getItem('token');
@@ -87,6 +87,7 @@ const UserProfile = (props) => {
     async function getUser() {
       try {
         let resp = await Axios.get(`http://localhost:8000/api/v1/auth/get-user/${Id}`);
+        console.log("axios call = ",resp)
         setOwnProfile(resp.data);
         console.log("getUser = ", resp.data);
       } catch (error) {
@@ -124,12 +125,13 @@ const UserProfile = (props) => {
   }
 
   // const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
-  async function saveProfile(profile) {
+  async function saveProfile(user) {
     try {
-      let resp = await Axios.put(`http://localhost:8000/api/v1/auth/update-user/${Id}`, 
+      let resp = await Axios.put(`http://localhost:8000/api/v1/auth/update-user/user/${Id}`, 
       formData
-    );
-  } catch (err) {
+      );
+      console.log("ddd",resp)
+    } catch (err) {
       console.log(err.response)
     }
   }
