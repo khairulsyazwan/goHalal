@@ -12,13 +12,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Axios from "axios";
 import { Redirect } from "react-router-dom";
+import { Paper } from "@material-ui/core";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Mr Hafiz
+        goHalal
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -46,24 +47,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn({
+  isAuth,
+  setIsAuth,
+  isAdmin,
+  setIsAdmin,
+  isOwner,
+  setIsOwner,
+  login,
+  setLogin,
+}) {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [success, setSuccess] = useState(false);
 
-  async function login(values) {
+  async function login() {
     try {
       let resp = await Axios.post(
         "http://localhost:8000/api/v1/auth/signin/",
         formData
       );
+      // console.log(resp.data);
       localStorage.setItem("token", resp.data.token);
       localStorage.setItem("userId", resp.data.user_id);
-      setSuccess(true);
+      localStorage.setItem("username", resp.data.username);
+      if (resp.data.username == "admin") {
+        setIsAdmin(true);
+      }
+      setIsAuth(true);
+      setLogin(true);
+      // console.log(resp);
     } catch (error) {
       console.log(error.response);
     }
@@ -77,68 +93,74 @@ export default function SignIn() {
     login();
   };
 
-  if (success || localStorage.getItem("token") != null) {
+  if (isAuth && isAdmin && localStorage.getItem("token") != null) {
+    console.log("ok");
+    return <Redirect to="/admin" />;
+  } else if (isAuth) {
     return <Redirect to="/" />;
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="username"
-            autoComplete="email"
-            autoFocus
-            onChange={onChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={onChange}
-          />
+    <Paper>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="username"
+              autoComplete="email"
+              autoFocus
+              onChange={onChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={onChange}
+            />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={onSubmit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={onSubmit}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+        </div>
+
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+    </Paper>
   );
 }

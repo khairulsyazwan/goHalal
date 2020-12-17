@@ -80,6 +80,7 @@ export default function SimpleTabs({
   stars,
   getRestaurant,
   getReviews,
+  ownRestaurant,
 }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -189,7 +190,7 @@ export default function SimpleTabs({
         >
           <Tab label="Reviews" {...a11yProps(0)} />
 
-          {userGroup == "restaurant_owner" ? (
+          {userGroup == "restaurant_owner" && ownRestaurant == id ? (
             <Tab label="Edit Page" {...a11yProps(1)} />
           ) : (
             <Tab label="Leave A Review" {...a11yProps(1)} />
