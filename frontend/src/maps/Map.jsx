@@ -17,10 +17,14 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
+import { NavLink } from "react-router-dom";
 
 /* global google */
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "#f0efeb",
+  },
   icon: {
     marginRight: theme.spacing(2),
   },
@@ -112,7 +116,7 @@ function Map() {
 
   const containerStyle = {
     width: "600px",
-    height: "90vh",
+    height: "100vh",
   };
 
   const options = {
@@ -262,7 +266,7 @@ function Map() {
   }
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(4);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -279,7 +283,7 @@ function Map() {
 
   const renderMap = () => {
     return (
-      <Container>
+      <Container className={classes.root}>
         <Grid container style={{ margin: "20px" }}>
           <Grid item md={6}>
             <GoogleMap
@@ -400,9 +404,12 @@ function Map() {
                       <img src={card.picture} alt="recipe thumbnail" /> */}
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
-                            <Link href={`/restaurant/${card.id}`}>
+                            <NavLink
+                              to={`/restaurant/${card.id}`}
+                              style={{ textDecoration: "none" }}
+                            >
                               {card.name}
-                            </Link>
+                            </NavLink>
                           </Typography>
                           <Typography>{card.address}</Typography>
                           <Typography variant="button">

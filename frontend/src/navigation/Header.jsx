@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-// import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-// import AccountCircle from '@material-ui/icons/AccountCircle';
-// import Switch from '@material-ui/core/Switch';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { withRouter, useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import axios from "axios";
+import Alert from "@material-ui/lab/Alert";
+import CloseIcon from "@material-ui/icons/Close";
+import Collapse from "@material-ui/core/Collapse";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import SearchIcon from "@material-ui/icons/Search";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import CreateIcon from "@material-ui/icons/Create";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-// console.log("username = ",username);
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -71,92 +73,92 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = (props) => {
-  const { history } = props;
+function Header({
+  isAuth,
+  setIsAuth,
+  isAdmin,
+  setIsAdmin,
+  isOwner,
+  setIsOwner,
+  login,
+  logout,
+  setLogin,
+  setLogout,
+}) {
   const classes = useStyles();
-  // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   let historyRoute = useHistory();
-  const [userGroup, setUserGroup] = useState();
+  let userId;
+
   const [username, setUsername] = useState();
-
-  // console.log(isMobile);
-
-  /* If User is login or not registered */
-  // const handleChange = (event) => {
-  //   setAuth(event.target.checked);
-  // };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClick = (pageURL) => {
-    history.push(pageURL);
+    historyRoute.push(pageURL);
     setAnchorEl(null);
   };
 
   const handleButtonClick = (pageURL) => {
-    history.push(pageURL);
+    historyRoute.push(pageURL);
   };
 
-  function logout() {
+  function logOut() {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("userId");
-    setUserGroup("");
     setUsername("");
+    setIsAuth(false);
+    setIsAdmin(false);
+    setLogout(true);
     historyRoute.push("/");
   }
 
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
-  async function getUser() {
-    let userId = localStorage.getItem("userId");
+  if (isAuth) {
+    getUser();
+  }
 
-    // console.log(userId);
+  async function getUser() {
+    userId = localStorage.getItem("userId");
     if (userId != null) {
       try {
         let resp = await axios.get(
           `http://localhost:8000/api/v1/auth/get-user/${userId}`
         );
-        setUserGroup(resp.data.group.name);
         setUsername(localStorage.getItem("username"));
+        // console.log(resp.data);
       } catch (err) {
         console.log(err.response);
       }
     }
   }
 
-  if (token) {
-    getUser();
-  }
-
-  // console.log("token = ",token)
-
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: "#ced4da" }}>
+      <AppBar position="static" style={{ background: "#4db6ac" }}>
         <Toolbar>
-          {/* <Typography variant="h5" className={classes.title}>
-            yeHalal
-          </Typography> */}
-          {/* {auth && ( */}
           {isMobile ? (
             <>
               <IconButton
                 edge="start"
                 className={classes.menuButton}
                 onClick={handleMenu}
-                color="inherit"
+                // color="inherit"
                 aria-label="menu"
               >
                 <MenuIcon />
               </IconButton>
+              <Typography variant="h4" color="textPrimary">
+                goHalal
+              </Typography>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
@@ -173,30 +175,45 @@ const Header = (props) => {
                 onClose={() => setAnchorEl(null)}
               >
                 <MenuItem onClick={() => handleMenuClick("/")}>Home</MenuItem>
-                <MenuItem onClick={() => handleMenuClick("/login")}>
-                  Login
-                </MenuItem>
-                <MenuItem onClick={() => handleMenuClick("/register")}>
-                  Register
-                </MenuItem>
+                {isAuth ? (
+                  <>
+                    <MenuItem onClick={logOut}>Logout</MenuItem>
+                  </>
+                ) : (
+                  <>
+                    <MenuItem onClick={() => handleMenuClick("/signin")}>
+                      Login
+                    </MenuItem>
+                    <MenuItem onClick={() => handleMenuClick("/signup")}>
+                      Register
+                    </MenuItem>
+                  </>
+                )}
               </Menu>
             </>
           ) : (
             <>
-              <div className={classes.headerOptions}>
-                <Button
-                  className={classes.button}
-                  variant="text"
-                  onClick={() => handleButtonClick("/")}
+              <Typography
+                variant="h5"
+                color="textPrimary"
+                style={{ marginRight: "10px" }}
+              >
+                <NavLink
+                  to="/"
+                  style={{ textDecoration: "none", color: "black" }}
                 >
-                  Home
-                </Button>
+                  goHalal
+                </NavLink>
+              </Typography>
+
+              <div className={classes.headerOptions}>
                 <Button
                   className={classes.button}
                   variant="text"
                   onClick={() => handleButtonClick("/map")}
                 >
                   Find Nearby
+                  <LocationOnIcon />
                 </Button>
 
                 <Button
@@ -204,17 +221,14 @@ const Header = (props) => {
                   variant="text"
                   onClick={() => handleButtonClick("/all-restaurants")}
                 >
-                  All Restaurants
+                  Restaurants
+                  <SearchIcon />
                 </Button>
 
                 {/* <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/login')}>Login</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button> */}
               </div>
-              <div className={classes.headerOptions3}>
-                <Typography variant="h4" color="textPrimary">
-                  go.halal
-                </Typography>
-              </div>
+              <div className={classes.headerOptions3}></div>
               <div className={classes.headerOptions2}>
                 {/* <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/')}>Home</Button>
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/map')}>Map</Button> */}
@@ -223,18 +237,20 @@ const Header = (props) => {
                     <Button
                       className={classes.button}
                       variant="text"
-                      onClick={logout}
+                      onClick={logOut}
                     >
+                      <LockOpenIcon />
                       Logout
                     </Button>
 
-                    {userGroup === "admin" ? (
+                    {isAdmin ? (
                       <Button
                         className={classes.button}
                         variant="text"
                         onClick={() => handleButtonClick(`/admin`)}
                       >
-                        Admin Dashboard
+                        <AccountCircleIcon />
+                        Admin
                       </Button>
                     ) : (
                       <Button
@@ -242,7 +258,7 @@ const Header = (props) => {
                         variant="text"
                         onClick={() => handleButtonClick(`/user/${userId}`)}
                       >
-                        Logged in as: {username}
+                        <AccountCircleIcon /> {username}
                       </Button>
                     )}
                   </div>
@@ -251,15 +267,17 @@ const Header = (props) => {
                     <Button
                       className={classes.button}
                       variant="text"
-                      onClick={() => handleButtonClick("/login")}
+                      onClick={() => handleButtonClick("/signin")}
                     >
+                      <LockOpenIcon />
                       Login
                     </Button>
                     <Button
                       className={classes.button}
                       variant="text"
-                      onClick={() => handleButtonClick("/register")}
+                      onClick={() => handleButtonClick("/signup")}
                     >
+                      <CreateIcon />
                       Register
                     </Button>
                   </div>
@@ -270,32 +288,49 @@ const Header = (props) => {
           {/* )} */}
         </Toolbar>
       </AppBar>
+      {login && (
+        <Collapse in={login}>
+          <Alert
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setLogin(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+          >
+            Successfully logged in!
+          </Alert>
+        </Collapse>
+      )}
+      {logout && (
+        <Collapse in={logout}>
+          <Alert
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setLogout(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            severity="info"
+          >
+            You are logged out! See you soon!
+          </Alert>
+        </Collapse>
+      )}
     </div>
   );
-};
+}
 
-export default withRouter(Header);
-
-// /* <IconButton
-//             edge="false"
-//             className={classes.menuButton}
-//             color="inherit"
-//             aria-label="menu">
-//         <Typography>Not Mobile</Typography>
-//         </IconButton>  */
-// /* <IconButton
-//   aria-label="account of current user"
-//   aria-controls="menu-appbar"
-//   aria-haspopup="true"
-//   onClick={handleMenu}
-//   color="inherit"
-// >
-//   <AccountCircle />
-// </IconButton> */
-
-// /* <FormGroup>
-//   <FormControlLabel
-//     control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
-//     label={auth ? 'Logout' : 'Login'}
-//   />
-// </FormGroup> */
+export default Header;

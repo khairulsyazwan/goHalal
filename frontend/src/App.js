@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./index.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -19,33 +19,50 @@ import SignUp from "./landings/Signup";
 import Admin from "./landings/Admin";
 
 function App() {
-  const [valid, setValid] = useState({
-    valid: false,
-    refreshed: true,
-  });
+  const [isAuth, setIsAuth] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [logout, setLogout] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setIsAuth(true);
+    }
+  }, []);
 
   return (
     <BrowserRouter basename="/">
-      <Header />
+      <Header
+        isAuth={isAuth}
+        setIsAuth={setIsAuth}
+        isAdmin={isAdmin}
+        setIsAdmin={setIsAdmin}
+        isOwner={isOwner}
+        setIsOwner={setIsOwner}
+        login={login}
+        setLogin={setLogin}
+        logout={logout}
+        setLogout={setLogout}
+      />
       <Switch>
         <Route exact path="/">
           <NewHome />
         </Route>
 
-        <Route path="/login">
-          <Login />
-        </Route>
-
         <Route path="/signin">
-          <SignIn />
+          <SignIn
+            isAuth={isAuth}
+            setIsAuth={setIsAuth}
+            isAdmin={isAdmin}
+            setIsAdmin={setIsAdmin}
+            login={login}
+            setLogin={setLogin}
+          />
         </Route>
 
         <Route path="/signup">
-          <SignUp />
-        </Route>
-
-        <Route path="/register">
-          <Register />
+          <SignUp isAuth={isAuth} setIsAuth={setIsAuth} />
         </Route>
 
         <Route path="/all-restaurants">
@@ -57,19 +74,20 @@ function App() {
         </Route>
 
         <Route path="/user/:id">
-          <UserProfile />
+          <UserProfile isAuth={isAuth} setIsAuth={setIsAuth} />
         </Route>
 
         <Route path="/restaurant/:id">
-          <Restaurant />
-        </Route>
-
-        <Route path="/restaurantuser">
-          <RestaurantUser />
+          <Restaurant isAuth={isAuth} setIsAuth={setIsAuth} />
         </Route>
 
         <Route path="/admin">
-          <Admin />
+          <Admin
+            isAuth={isAuth}
+            setIsAuth={setIsAuth}
+            isAdmin={isAdmin}
+            setIsAdmin={setIsAdmin}
+          />
         </Route>
       </Switch>
     </BrowserRouter>

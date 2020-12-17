@@ -15,14 +15,15 @@ import TabPanel from "./TabPanel";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 
-function Restaurant() {
+function Restaurant({ isAuth }) {
   const [single, setSingle] = useState({});
   const [isLoaded, setisLoaded] = useState(false);
   const [reviews, setReviews] = useState();
-  const [formData, setFormData] = useState();
+  // const [formData, setFormData] = useState();
   const [isLiked, setisLiked] = useState(false);
   const [fav, setFav] = useState();
   const [userGroup, setUserGroup] = useState();
+  const [ownRestaurant, setOwnRestaurant] = useState();
 
   let { id } = useParams();
   let userId = localStorage.getItem("userId");
@@ -30,9 +31,10 @@ function Restaurant() {
   useEffect(() => {
     getRestaurant();
     getReviews();
-    if (userId) {
+    if (isAuth) {
       getUser();
     }
+    console.log(isAuth);
 
     return () => {};
   }, []);
@@ -103,7 +105,8 @@ function Restaurant() {
       checkLiked(res);
       setFav(res);
       setUserGroup(resp.data.group.name);
-      console.log(resp);
+      setOwnRestaurant(resp.data.profile.restaurant_owned[0]);
+      // console.log(resp.data.profile.restaurant_owned[0]);
     } catch (err) {
       console.log(err.response);
     }
@@ -211,6 +214,8 @@ function Restaurant() {
               userGroup={userGroup}
               getRestaurant={getRestaurant}
               getReviews={getReviews}
+              isAuth={isAuth}
+              ownRestaurant={ownRestaurant}
             />
           </Container>
         </Grid>
