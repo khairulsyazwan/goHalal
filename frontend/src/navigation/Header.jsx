@@ -120,6 +120,7 @@ function Header({
   }
 
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   if (isAuth) {
     getUser();
