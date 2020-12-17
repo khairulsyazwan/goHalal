@@ -79,6 +79,7 @@ export default function SignUp() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
+    e.preventDefault();
     register();
   };
 
