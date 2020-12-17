@@ -116,6 +116,7 @@ const Header = (props) => {
   }
 
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   async function getUser() {
     let userId = localStorage.getItem("userId");
@@ -239,7 +240,7 @@ const Header = (props) => {
                       <Button
                         className={classes.button}
                         variant="text"
-                        onClick={() => handleButtonClick(`/user/{int:id}`)}
+                        onClick={() => handleButtonClick(`/user/${userId}`)}
                       >
                         Logged in as: {username}
                       </Button>
