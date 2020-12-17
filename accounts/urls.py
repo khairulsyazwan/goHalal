@@ -15,6 +15,8 @@ urlpatterns = [
     path('upload-image/<int:id>', views.upload_image, name="upload_image"),
     path('favourite-restaurant/<int:user_id>/<int:restaurant_id>', views.favourite_restaurant, name="favourite_restaurant"),
     path('unfavourite-restaurant/<int:user_id>/<int:restaurant_id>', views.unfavourite_restaurant, name="unfavourite_restaurant"),
+    path('request-ownership/<int:user_id>/<int:restaurant_id>', views.request_ownership, name="request_ownership"),
+    path('get-request/', views.get_request, name="get_request")
 ]
 
 

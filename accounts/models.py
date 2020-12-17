@@ -20,6 +20,10 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Request(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="request", blank=True)
+    restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.CASCADE, related_name="request", blank=True)
     
 # create User Profile when User is being created
 def create_user_profile(sender, instance, created, **kwargs):  

@@ -45,3 +45,11 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ['name']
+
+# Request Serializer
+class RequestSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    restaurant = RestaurantSerializer(read_only=True)
+    class Meta:
+        model = Request
+        fields = '__all__'

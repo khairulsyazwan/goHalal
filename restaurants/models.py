@@ -30,7 +30,7 @@ class Restaurant(models.Model):
 
     name = models.CharField(max_length=60)
     address = models.CharField(max_length=255)
-    cuisine = models.CharField(max_length=50, choices=Cuisine.choices, default='Malay')
+    cuisine = models.CharField(max_length=50, choices=Cuisine.choices, default='None')
     picture = CloudinaryField('image', default="https://s3.amazonaws.com/vulture-food-photos/defaultvulture.png")
     average_rating = models.FloatField(default=0, null=True)
     is_registered = models.BooleanField(default=False, null=True)
