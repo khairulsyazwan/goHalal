@@ -85,11 +85,16 @@ def get_user(request, id):
         user = User.objects.get(pk=id)
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    try:
+        group = Group.objects.get(user=id)
+    except Group.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
 
     user_serializer = UserSerializer(user)
     profile_serializer = ProfileSerializer(user.profile)
-    # group_serializer = GroupSerializer(user.groups.get())
-    print(user.groups.get())
+    group_serializer = GroupSerializer(group)
+    
 
     return Response({"user": user_serializer.data, "profile": profile_serializer.data, "group": group_serializer.data}, status=status.HTTP_200_OK)
 

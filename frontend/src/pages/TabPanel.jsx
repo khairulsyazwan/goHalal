@@ -103,6 +103,7 @@ export default function SimpleTabs({ reviews, id, token, stars }) {
 
   async function postReview() {
     try {
+      let token = localStorage.getItem("token");
       let resp = await axios.post(
         `http://localhost:8000/api/v1/reviews/post/${userId}/${id}/`,
         formData,

@@ -21,7 +21,7 @@ function Restaurant() {
   const [reviews, setReviews] = useState();
   const [formData, setFormData] = useState();
   const [isLiked, setisLiked] = useState(false);
-  const [user, setUser] = useState();
+  const [fav, setFav] = useState();
 
   let { id } = useParams();
   let userId = localStorage.getItem("userId");
@@ -98,21 +98,22 @@ function Restaurant() {
       let resp = await axios.get(
         `http://localhost:8000/api/v1/auth/get-user/${userId}`
       );
-      console.log(resp);
-      // setUser();
-      // console.log(resp);
+      // console.log(resp.data.profile);
+      let res = resp.data.profile.favourites;
+      checkLiked(res);
+      setFav(res);
     } catch (err) {
       console.log(err.response);
     }
   }
 
-  // function checkLiked() {
-  //   for (let index = 0; index < array.length; index++) {
-  //     if (array[index] == id) {
-  //       setisLiked(true);
-  //     }
-  //   }
-  // }
+  function checkLiked(arr) {
+    for (let index = 0; index < arr.length; index++) {
+      if (arr[index] == id) {
+        setisLiked(true);
+      }
+    }
+  }
 
   const url =
     "https://images.unsplash.com/photo-1546484613-910673d7d247?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
@@ -129,13 +130,13 @@ function Restaurant() {
   const classes = useStyles();
 
   async function likeRestaurant() {
-    let token = localStorage.getItem("token");
-
     if (!isLiked) {
       try {
+        let token = localStorage.getItem("token");
+        console.log(token);
         let resp = await axios.post(
-          `http://localhost:8000/api/v1/auth/favourite-restaurant/${userId}/${id}/`,
-          formData,
+          `http://localhost:8000/api/v1/auth/favourite-restaurant/${userId}/${id}`,
+          {},
           { headers: { Authorization: `Token ${token}` } }
         );
         console.log(resp);
@@ -146,9 +147,10 @@ function Restaurant() {
       }
     } else {
       try {
+        let token = localStorage.getItem("token");
         let resp = await axios.post(
-          `http://localhost:8000/api/v1/auth/unfavourite-restaurant/${userId}/${id}/`,
-          formData,
+          `http://localhost:8000/api/v1/auth/unfavourite-restaurant/${userId}/${id}`,
+          {},
           { headers: { Authorization: `Token ${token}` } }
         );
         console.log(resp);

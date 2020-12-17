@@ -101,7 +101,8 @@ const Header = (props) => {
 
   function logout() {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     historyRoute.push("/");
   }
 
@@ -153,7 +154,6 @@ const Header = (props) => {
           ) : (
             <>
               <div className={classes.headerOptions}>
-
                 <Button
                   className={classes.button}
                   variant="text"
@@ -197,7 +197,11 @@ const Header = (props) => {
                     >
                       Logout
                     </Button>
-                    <Button disabled className={classes.button} variant="text">
+                    <Button
+                      className={classes.button}
+                      variant="text"
+                      onClick={() => handleButtonClick(`/user/{int:id}`)}
+                    >
                       Logged in as: {username}
                     </Button>
                   </div>
