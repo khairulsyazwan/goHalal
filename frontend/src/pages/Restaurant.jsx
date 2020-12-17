@@ -22,6 +22,7 @@ function Restaurant() {
   const [formData, setFormData] = useState();
   const [isLiked, setisLiked] = useState(false);
   const [fav, setFav] = useState();
+  const [userGroup, setUserGroup] = useState();
 
   let { id } = useParams();
   let userId = localStorage.getItem("userId");
@@ -98,10 +99,10 @@ function Restaurant() {
       let resp = await axios.get(
         `http://localhost:8000/api/v1/auth/get-user/${userId}`
       );
-      // console.log(resp.data.profile);
       let res = resp.data.profile.favourites;
       checkLiked(res);
       setFav(res);
+      setUserGroup(resp.data.group.name);
     } catch (err) {
       console.log(err.response);
     }
@@ -202,7 +203,12 @@ function Restaurant() {
         </Grid>
         <Grid container>
           <Container>
-            <TabPanel reviews={reviews} id={id} stars={stars} />
+            <TabPanel
+              reviews={reviews}
+              id={id}
+              stars={stars}
+              userGroup={userGroup}
+            />
           </Container>
         </Grid>
       </>

@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleTabs({ reviews, id, token, stars }) {
+export default function SimpleTabs({ reviews, id, token, stars, userGroup }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [formData, setFormData] = useState();
@@ -129,7 +129,12 @@ export default function SimpleTabs({ reviews, id, token, stars }) {
           centered
         >
           <Tab label="Reviews" {...a11yProps(0)} />
-          <Tab label="Leave A Review" {...a11yProps(1)} />
+          {userGroup == "normal_user" ? (
+            <Tab label="Leave A Review" {...a11yProps(1)} />
+          ) : (
+            <Tab label="Edit Page" {...a11yProps(1)} />
+          )}
+          {/* <Tab label="Leave A Review" {...a11yProps(1)} /> */}
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -162,120 +167,237 @@ export default function SimpleTabs({ reviews, id, token, stars }) {
           <div>No reviews yet! </div>
         )}
       </TabPanel>
+
       <TabPanel value={value} index={1}>
-        <Container component="main" maxWidth="md">
-          <div className={classes.paper}>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    autoComplete="fname"
-                    name="review_title"
-                    variant="outlined"
-                    fullWidth
-                    id="review_title"
-                    label="Title"
-                    autoFocus
-                    onChange={onChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    id="review_body"
-                    label="Share your thoughts!"
-                    name="review_body"
-                    autoComplete="lname"
-                    onChange={onChange}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControl fullWidth>
-                    <InputLabel id="service-rating-label">
-                      Service Rating
-                    </InputLabel>
-                    <Select
-                      labelId="service-rating-label"
-                      id="service_rating"
-                      name="service_rating"
+        {userGroup == "normal_user" ? (
+          <Container component="main" maxWidth="md">
+            <div className={classes.paper}>
+              <form className={classes.form} noValidate>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="fname"
+                      name="review_title"
+                      variant="outlined"
                       fullWidth
-                      defaultValue=""
+                      id="review_title"
+                      label="Title"
+                      autoFocus
                       onChange={onChange}
-                    >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                      <MenuItem value={5}>5</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControl fullWidth>
-                    <InputLabel id="taste-rating-label">
-                      Taste Rating
-                    </InputLabel>
-                    <Select
-                      labelId="tate-rating-label"
-                      id="taste"
-                      name="taste"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
                       fullWidth
+                      id="review_body"
+                      label="Share your thoughts!"
+                      name="review_body"
+                      autoComplete="lname"
                       onChange={onChange}
-                      defaultValue=""
-                    >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                      <MenuItem value={5}>5</MenuItem>
-                    </Select>
-                  </FormControl>
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel id="service-rating-label">
+                        Service Rating
+                      </InputLabel>
+                      <Select
+                        labelId="service-rating-label"
+                        id="service_rating"
+                        name="service_rating"
+                        fullWidth
+                        defaultValue=""
+                        onChange={onChange}
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel id="taste-rating-label">
+                        Taste Rating
+                      </InputLabel>
+                      <Select
+                        labelId="tate-rating-label"
+                        id="taste"
+                        name="taste"
+                        fullWidth
+                        onChange={onChange}
+                        defaultValue=""
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel id="cleanliness-rating-label">
+                        Cleanliness Rating
+                      </InputLabel>
+                      <Select
+                        labelId="cleanliness-rating-label"
+                        id="service_rating"
+                        name="cleanliness_rating"
+                        fullWidth
+                        onChange={onChange}
+                        defaultValue=""
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                  <FormControl fullWidth>
-                    <InputLabel id="cleanliness-rating-label">
-                      Cleanliness Rating
-                    </InputLabel>
-                    <Select
-                      labelId="cleanliness-rating-label"
-                      id="service_rating"
-                      name="cleanliness_rating"
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={submit}
+                >
+                  Submit
+                </Button>
+                <Grid container justify="flex-end">
+                  <Grid item>
+                    <Link href="/login" variant="body2">
+                      Have an account?
+                      <br />
+                      Account required to post a review.
+                    </Link>
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
+          </Container>
+        ) : (
+          <Container component="main" maxWidth="md">
+            <div className={classes.paper}>
+              <form className={classes.form} noValidate>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="fname"
+                      name="review_title"
+                      variant="outlined"
                       fullWidth
+                      id="review_title"
+                      label="Title"
+                      autoFocus
                       onChange={onChange}
-                      defaultValue=""
-                    >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                      <MenuItem value={5}>5</MenuItem>
-                    </Select>
-                  </FormControl>
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      id="review_body"
+                      label="Share your thoughts!"
+                      name="review_body"
+                      autoComplete="lname"
+                      onChange={onChange}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel id="service-rating-label">
+                        Service Rating
+                      </InputLabel>
+                      <Select
+                        labelId="service-rating-label"
+                        id="service_rating"
+                        name="service_rating"
+                        fullWidth
+                        defaultValue=""
+                        onChange={onChange}
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel id="taste-rating-label">
+                        Taste Rating
+                      </InputLabel>
+                      <Select
+                        labelId="tate-rating-label"
+                        id="taste"
+                        name="taste"
+                        fullWidth
+                        onChange={onChange}
+                        defaultValue=""
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel id="cleanliness-rating-label">
+                        Cleanliness Rating
+                      </InputLabel>
+                      <Select
+                        labelId="cleanliness-rating-label"
+                        id="service_rating"
+                        name="cleanliness_rating"
+                        fullWidth
+                        onChange={onChange}
+                        defaultValue=""
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={submit}
-              >
-                Submit
-              </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/login" variant="body2">
-                    Have an account?
-                    <br />
-                    Account required to post a review.
-                  </Link>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={submit}
+                >
+                  Submit
+                </Button>
+                <Grid container justify="flex-end">
+                  <Grid item>
+                    <Link href="/login" variant="body2">
+                      Have an account?
+                      <br />
+                      Account required to post a review.
+                    </Link>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </form>
-          </div>
-        </Container>
+              </form>
+            </div>
+          </Container>
+        )}
       </TabPanel>
     </div>
   );
