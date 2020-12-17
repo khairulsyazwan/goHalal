@@ -93,6 +93,9 @@ const UserProfile = (props) => {
   // const [confirmDelPhoto, setConfirmDelPhoto] = useState(false);
   const [ownProfile, setOwnProfile] = useState();
 
+  const [favourites, setFavourites] = useState();
+  const [reviews, setReviews] = useState();
+
   // const [activeStep, setActiveStep] = useState(0);
 
   //fetch user
@@ -103,6 +106,8 @@ const UserProfile = (props) => {
           `http://localhost:8000/api/v1/auth/get-user/${Id}`
         );
         setOwnProfile(resp.data);
+        setFavourites(resp.data.profile.favourites);
+
         console.log("getUser = ", resp.data);
       } catch (error) {
         console.log(error);
@@ -163,10 +168,12 @@ const UserProfile = (props) => {
 
   const handleBack = () => {
     setEditProfile(editProfile - 1);
+    console.log(editProfile);
   };
 
   const handleEdit = () => {
     setEditProfile(!editProfile);
+    console.log(editProfile);
   };
 
   const handleClick = (pageURL) => {
@@ -206,28 +213,107 @@ const UserProfile = (props) => {
             >
               {editProfile ? "Edit Profile" : "Edit Profile"}
             </Button>
+            {editProfile ? (
+              <Portal container={container.current}>
+                <Paper elevation={3}>
+                  <FormControl>
+                    <form>
+                      <Typography variant="h6" gutterBottom>
+                        Edit Profile
+                      </Typography>
+                      <Grid container spacing={3} className={classes.edit}>
+                        <Grid item xs={12} md={6}>
+                          <TextField
+                            required
+                            id="firstName"
+                            name="firstName"
+                            label="First name"
+                            // variant="outlined"
+                            // fullWidth
+                            value={form.first_name}
+                            onChange={handleChange}
+                            autoComplete="given-name"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField
+                            required
+                            id="lastName"
+                            name="lastName"
+                            label="Last name"
+                            // variant="outlined"
+                            // fullWidth
+                            value={form.last_name}
+                            onChange={handleChange}
+                            autoComplete="family-name"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField
+                            required
+                            id="username"
+                            name="username"
+                            label="Username"
+                            // variant="outlined"
+                            // fullWidth
+                            value={form.username}
+                            onChange={handleChange}
+                            autoComplete="username"
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <TextField
+                            required
+                            id="email"
+                            name="email"
+                            label="Email Address"
+                            // variant="outlined"
+                            // fullWidth
+                            value={form.email}
+                            onChange={handleChange}
+                            autoComplete="email-address"
+                          />
+                        </Grid>
+                      </Grid>
+                      <Button className={classes.button} onClick={handleBack}>
+                        Back
+                      </Button>
+                      <Button className={classes.button}>Save</Button>
+                    </form>
+                  </FormControl>
+                </Paper>
+              </Portal>
+            ) : null}
           </Grid>
         </Grid>
       </Grid>
+      <div ref={container}></div>
 
       {/* links to view */}
-      <Grid className={classes.cardlinks} container spacing={2}>
+      {/* <Grid className={classes.cardlinks} container spacing={2}>
         <Grid item xs={6}>
           <Paper>
             <Card className={classes.root}>
               <CardActionArea>
                 <CardMedia />
-                <CardContent onClick={() => handleClick("/")}>
+                <CardContent>
                   <Typography variant="h3" component="h3">
                     My Favorite Restaurants
                   </Typography>
-                  <Typography variant="body2" component="p">
-                    View all your favorites here
-                  </Typography>
+                  <div>
+                    {ownProfile && favourites ? (
+                      favourites.map((rev, index) => (
+                        <Typography variant="body1" component="p">
+                          {rev}
+                        </Typography>
+                      ))
+                    ) : (
+                      <Typography variant="body1" component="p">
+                        View all your favorites here
+                      </Typography>
+                    )}
+                  </div>
                 </CardContent>
-                <CardActions>
-                  <Button size="small">Go here</Button>
-                </CardActions>
               </CardActionArea>
             </Card>
           </Paper>
@@ -238,23 +324,20 @@ const UserProfile = (props) => {
             <Card className={classes.root}>
               <CardActionArea>
                 <CardMedia />
-                <CardContent onClick={() => handleClick("/")}>
+                <CardContent>
                   <Typography variant="h3" component="h3">
                     My Restaurant Reviews
                   </Typography>
-                  <Typography variant="body2" component="p">
+
+                  <Typography variant="body1" component="p">
                     All the list of reviews you have
                   </Typography>
                 </CardContent>
-                <CardActions>
-                  <Button size="small">Go Here</Button>
-                </CardActions>
               </CardActionArea>
             </Card>
           </Paper>
         </Grid>
-      </Grid>
-      <AppFooter />
+      </Grid> */}
     </>
   );
 };

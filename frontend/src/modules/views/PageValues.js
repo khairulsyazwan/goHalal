@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container, Grid, Paper, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import ExploreIcon from "@material-ui/icons/Explore";
+import RateReviewIcon from "@material-ui/icons/RateReview";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 
 const styles = (theme) => ({
   root: {
@@ -58,12 +61,13 @@ function PageValues(props) {
                 src="/static/themes/onepirate/productValues1.svg"
                 alt="suitcase"
               /> */}
-                <Typography variant="h6" className={classes.title}>
-                  The best halal restaurants nearby
+                <ExploreIcon style={{ fontSize: 50 }} />
+                <Typography variant="h5" className={classes.title}>
+                  Discover nearby
                 </Typography>
-                <Typography variant="h5">
-                  {"From the latest local foods to the iconic restaurants, "}
-                  {" just a few stops away from your home."}
+                <Typography variant="h6">
+                  {"Always wondered about what to eat, and  "}
+                  {" and not wanting to travel far? We've got you covered!"}
                 </Typography>
               </div>
             </Paper>
@@ -77,13 +81,12 @@ function PageValues(props) {
                 src="/static/themes/onepirate/productValues2.svg"
                 alt="graph"
               /> */}
-                <Typography variant="h6" className={classes.title}>
-                  New experiences with us
+                <EmojiEmotionsIcon style={{ fontSize: 50 }} />
+                <Typography variant="h5" className={classes.title}>
+                  New experiences
                 </Typography>
-                <Typography variant="h5">
-                  {
-                    "Your Sundays will not be alike with finding foods around you"
-                  }
+                <Typography variant="h6">
+                  {"Time for a change in flavour, a little bit of adventure."}
                 </Typography>
               </div>
             </Paper>
@@ -97,12 +100,14 @@ function PageValues(props) {
                 src="/static/themes/onepirate/productValues3.svg"
                 alt="clock"
               /> */}
-                <Typography variant="h6" className={classes.title}>
-                  Exclusive Reserve Space
+                <RateReviewIcon style={{ fontSize: 50 }} />
+                <Typography variant="h5" className={classes.title}>
+                  Read before you eat
                 </Typography>
-                <Typography variant="h5">
-                  {"By registering, you will access specially reserved space"}
-                  {" from the owner themselves!"}
+                <Typography variant="h6">
+                  {
+                    "Fret not! Reviews will help you decide if it's worth the trip."
+                  }
                 </Typography>
               </div>
             </Paper>
