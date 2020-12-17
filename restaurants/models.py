@@ -36,8 +36,8 @@ class Restaurant(models.Model):
     is_registered = models.BooleanField(default=False, null=True)
     max_pax_reservations = models.IntegerField(default=5, null=True)
     capacity = models.IntegerField(default=50, null=True)
-    lat = models.FloatField()
-    lng = models.FloatField()
+    lat = models.FloatField(null=True)
+    lng = models.FloatField(null=True)
     restaurant_id = models.IntegerField(null=True)
 
     def __str__(self):

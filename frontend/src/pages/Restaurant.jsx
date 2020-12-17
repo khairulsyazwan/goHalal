@@ -208,6 +208,8 @@ function Restaurant() {
               id={id}
               stars={stars}
               userGroup={userGroup}
+              getRestaurant={getRestaurant}
+              getReviews={getReviews}
             />
           </Container>
         </Grid>

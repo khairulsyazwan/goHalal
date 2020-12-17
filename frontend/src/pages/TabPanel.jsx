@@ -73,7 +73,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleTabs({ reviews, id, token, stars, userGroup }) {
+export default function SimpleTabs({
+  reviews,
+  id,
+  userGroup,
+  stars,
+  getRestaurant,
+  getReviews,
+}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [formData, setFormData] = useState();
@@ -93,11 +100,28 @@ export default function SimpleTabs({ reviews, id, token, stars, userGroup }) {
     });
   }
 
+  function onChange2(e) {
+    setFormData({
+      ...formData,
+      restaurant: parseInt(id),
+      [e.target.name]: e.target.value,
+    });
+  }
+
   function submit(e) {
     e.preventDefault();
     // console.log(formData);
     if (formData) {
       postReview();
+      getReviews();
+    }
+  }
+  function submit2(e) {
+    e.preventDefault();
+    // console.log(formData);
+    if (formData) {
+      editRestaurant();
+      getRestaurant();
     }
   }
 
@@ -114,6 +138,22 @@ export default function SimpleTabs({ reviews, id, token, stars, userGroup }) {
     } catch (err) {
       console.log(err.response);
       alert("Please login to submit a review");
+    }
+  }
+
+  async function editRestaurant() {
+    try {
+      let token = localStorage.getItem("token");
+      let resp = await axios.put(
+        `http://localhost:8000/api/v1/restaurants/update/${id}/${userId}/`,
+        formData,
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      console.log(resp);
+      alert("Successfully edited restaurant!");
+    } catch (err) {
+      console.log(err.response);
+      alert("Meh");
     }
   }
 
@@ -290,87 +330,60 @@ export default function SimpleTabs({ reviews, id, token, stars, userGroup }) {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      autoComplete="fname"
-                      name="review_title"
+                      autoComplete="name"
+                      name="name"
                       variant="outlined"
                       fullWidth
-                      id="review_title"
-                      label="Title"
+                      id="name"
+                      label="name"
                       autoFocus
-                      onChange={onChange}
+                      onChange={onChange2}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       variant="outlined"
                       fullWidth
-                      id="review_body"
-                      label="Share your thoughts!"
-                      name="review_body"
-                      autoComplete="lname"
-                      onChange={onChange}
+                      id="address"
+                      label="address"
+                      name="address"
+                      autoComplete="address"
+                      onChange={onChange2}
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={12}>
                     <FormControl fullWidth>
-                      <InputLabel id="service-rating-label">
-                        Service Rating
-                      </InputLabel>
+                      <InputLabel id="cuisine-label">Cuisine</InputLabel>
                       <Select
-                        labelId="service-rating-label"
-                        id="service_rating"
-                        name="service_rating"
+                        labelId="cuisine-label"
+                        id="cuisine"
+                        name="cuisine"
                         fullWidth
                         defaultValue=""
-                        onChange={onChange}
+                        onChange={onChange2}
                       >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                        <MenuItem value={5}>5</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <FormControl fullWidth>
-                      <InputLabel id="taste-rating-label">
-                        Taste Rating
-                      </InputLabel>
-                      <Select
-                        labelId="tate-rating-label"
-                        id="taste"
-                        name="taste"
-                        fullWidth
-                        onChange={onChange}
-                        defaultValue=""
-                      >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                        <MenuItem value={5}>5</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <FormControl fullWidth>
-                      <InputLabel id="cleanliness-rating-label">
-                        Cleanliness Rating
-                      </InputLabel>
-                      <Select
-                        labelId="cleanliness-rating-label"
-                        id="service_rating"
-                        name="cleanliness_rating"
-                        fullWidth
-                        onChange={onChange}
-                        defaultValue=""
-                      >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                        <MenuItem value={5}>5</MenuItem>
+                        <MenuItem value="European">European</MenuItem>
+                        <MenuItem value="American">American</MenuItem>
+                        <MenuItem value="Bakery and Cakes">
+                          Bakery and Cakes
+                        </MenuItem>
+                        <MenuItem value="Beverages">Beverages</MenuItem>
+                        <MenuItem value="Chinese">Chinese</MenuItem>
+                        <MenuItem value="Desserts">Desserts</MenuItem>
+                        <MenuItem value="Fast Food">Fast Food</MenuItem>
+                        <MenuItem value="Fusion">Fusion</MenuItem>
+                        <MenuItem value="Indian">Indian</MenuItem>
+                        <MenuItem value="Indonesian">Indonesian</MenuItem>
+                        <MenuItem value="International">International</MenuItem>
+                        <MenuItem value="Japanese">Japanese</MenuItem>
+                        <MenuItem value="Korean">Korean</MenuItem>
+                        <MenuItem value="Malay">Malay</MenuItem>
+                        <MenuItem value="Mediterranean">Mediterranean</MenuItem>
+                        <MenuItem value="Peranakan">Peranakan</MenuItem>
+                        <MenuItem value="Pizza">Pizza</MenuItem>
+                        <MenuItem value="Seafood">Seafood</MenuItem>
+                        <MenuItem value="Thai">Thai</MenuItem>
+                        <MenuItem value="Western">Western</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -381,19 +394,10 @@ export default function SimpleTabs({ reviews, id, token, stars, userGroup }) {
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-                  onClick={submit}
+                  onClick={submit2}
                 >
                   Submit
                 </Button>
-                <Grid container justify="flex-end">
-                  <Grid item>
-                    <Link href="/login" variant="body2">
-                      Have an account?
-                      <br />
-                      Account required to post a review.
-                    </Link>
-                  </Grid>
-                </Grid>
               </form>
             </div>
           </Container>
