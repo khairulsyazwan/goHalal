@@ -20,13 +20,18 @@ function Restaurant() {
   const [isLoaded, setisLoaded] = useState(false);
   const [reviews, setReviews] = useState();
   const [formData, setFormData] = useState();
+  const [isLiked, setisLiked] = useState(false);
+  const [user, setUser] = useState();
+
   let { id } = useParams();
   let userId = localStorage.getItem("userId");
-  let token = localStorage.getItem("token");
 
   useEffect(() => {
     getRestaurant();
     getReviews();
+    if (userId) {
+      getUser();
+    }
 
     return () => {};
   }, []);
@@ -63,7 +68,6 @@ function Restaurant() {
     }
   }
 
-  console.log(reviews);
   async function getRestaurant() {
     try {
       let resp = await axios.get(
@@ -89,6 +93,27 @@ function Restaurant() {
     }
   }
 
+  async function getUser() {
+    try {
+      let resp = await axios.get(
+        `http://localhost:8000/api/v1/auth/get-user/${userId}`
+      );
+      console.log(resp);
+      // setUser();
+      // console.log(resp);
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+
+  // function checkLiked() {
+  //   for (let index = 0; index < array.length; index++) {
+  //     if (array[index] == id) {
+  //       setisLiked(true);
+  //     }
+  //   }
+  // }
+
   const url =
     "https://images.unsplash.com/photo-1546484613-910673d7d247?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
 
@@ -102,6 +127,38 @@ function Restaurant() {
   }));
 
   const classes = useStyles();
+
+  async function likeRestaurant() {
+    let token = localStorage.getItem("token");
+
+    if (!isLiked) {
+      try {
+        let resp = await axios.post(
+          `http://localhost:8000/api/v1/auth/favourite-restaurant/${userId}/${id}/`,
+          formData,
+          { headers: { Authorization: `Token ${token}` } }
+        );
+        console.log(resp);
+        setisLiked(true);
+      } catch (err) {
+        console.log(err.response);
+        alert("Please login to like!");
+      }
+    } else {
+      try {
+        let resp = await axios.post(
+          `http://localhost:8000/api/v1/auth/unfavourite-restaurant/${userId}/${id}/`,
+          formData,
+          { headers: { Authorization: `Token ${token}` } }
+        );
+        console.log(resp);
+        setisLiked(false);
+      } catch (err) {
+        console.log(err.response);
+        alert("Please login to like!");
+      }
+    }
+  }
 
   function renderPage() {
     return (
@@ -132,15 +189,18 @@ function Restaurant() {
               justify="center"
               style={{ marginTop: "5px", marginBottom: "5px" }}
             >
-              <Button>
-                <ThumbUpIcon fontSize="large" color="action" />
+              <Button onClick={likeRestaurant}>
+                <ThumbUpIcon
+                  fontSize="large"
+                  color={isLiked ? "primary" : "action"}
+                />
               </Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid container>
           <Container>
-            <TabPanel reviews={reviews} id={id} token={token} stars={stars} />
+            <TabPanel reviews={reviews} id={id} stars={stars} />
           </Container>
         </Grid>
       </>

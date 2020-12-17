@@ -88,7 +88,7 @@ def get_user(request, id):
 
     user_serializer = UserSerializer(user)
     profile_serializer = ProfileSerializer(user.profile)
-    group_serializer = GroupSerializer(user.groups.get())
+    # group_serializer = GroupSerializer(user.groups.get())
     print(user.groups.get())
 
     return Response({"user": user_serializer.data, "profile": profile_serializer.data, "group": group_serializer.data}, status=status.HTTP_200_OK)

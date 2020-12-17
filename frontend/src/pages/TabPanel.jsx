@@ -33,9 +33,9 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
+        <Container>
+          <Box>{children}</Box>
+        </Container>
       )}
     </div>
   );
@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "100%",
+    margin: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -133,22 +134,27 @@ export default function SimpleTabs({ reviews, id, token, stars }) {
       <TabPanel value={value} index={0}>
         {reviews ? (
           <ul className="list-group mb-4">
-            <Grid container>
-              {reviews.map((card, index) => (
-                <Grid item xs={12} key={index}>
-                  <Card className={classes.card} style={{ marginTop: "10px" }}>
-                    <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {card.review_title}
-                      </Typography>
-                      <Typography>{stars(card.average_rating)}</Typography>
-                      <Typography>
-                        {card.review_body} - {card.user.username}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
+            <Grid container justify="center">
+              <Grid item xs={8}>
+                {reviews.map((card, index) => (
+                  <Grid item xs={12} key={index}>
+                    <Card
+                      className={classes.card}
+                      style={{ marginTop: "10px" }}
+                    >
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {card.review_title}
+                        </Typography>
+                        <Typography>{stars(card.average_rating)}</Typography>
+                        <Typography>
+                          {card.review_body} - {card.user.username}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
             </Grid>
           </ul>
         ) : (

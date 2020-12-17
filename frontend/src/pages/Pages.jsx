@@ -29,7 +29,7 @@ function Pages({ restaurants, loading }) {
               <Typography gutterBottom variant="h5" component="h2">
                 <Link href={`/restaurant/${card.id}`}>{card.name}</Link>
               </Typography>
-              <Typography>{card.address}</Typography>
+              <Typography variant="body1">{card.address}</Typography>
             </CardContent>
           </Card>
         </Grid>
