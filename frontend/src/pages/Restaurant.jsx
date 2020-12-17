@@ -135,13 +135,13 @@ function Restaurant() {
     if (!isLiked) {
       try {
         let token = localStorage.getItem("token");
-        console.log(token);
+        // console.log(token);
         let resp = await axios.post(
           `http://localhost:8000/api/v1/auth/favourite-restaurant/${userId}/${id}`,
           {},
           { headers: { Authorization: `Token ${token}` } }
         );
-        console.log(resp);
+        // console.log(resp);
         setisLiked(true);
       } catch (err) {
         console.log(err.response);
