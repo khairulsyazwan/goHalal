@@ -41,7 +41,7 @@ function ProductHero(props) {
         alt="increase priority"
       />
       <Typography color="inherit" align="center" variant="h1">
-        Let's Go Halal
+        Let's Go Halal!
       </Typography>
       <Typography
         color="inherit"
@@ -61,9 +61,9 @@ function ProductHero(props) {
       >
         Search
       </Button>
-      <Typography variant="body2" color="inherit" className={classes.more}>
-        Discover the experience!
-      </Typography>
+      {/* <Typography variant="body2" color="inherit" className={classes.more}>
+        No more hassle!
+      </Typography> */}
     </ProductHeroLayout>
   );
 }
