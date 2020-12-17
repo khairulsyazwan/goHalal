@@ -251,3 +251,52 @@ def get_request(request):
         request_serializer = RequestSerializer(r, many=True)
 
     return Response({"requests": request_serializer.data}, status=status.HTTP_200_OK)
+
+# Accept request
+@csrf_exempt
+@api_view(['PUT',])
+@permission_classes([IsAuthenticated])
+@admin_only
+def accept_request(request, user_id, restaurant_id):
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        restaurant = Restaurant.objects.get(pk=restaurant_id)
+    except Restaurant.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    user.profile.restaurant_owned.add(restaurant)
+    restaurant.owners.add(user.profile)
+    restaurant.is_registered = True
+
+    group = Group.objects.get(name='normal_user')
+    user.groups.remove(group)
+
+    group1 = Group.objects.get(name='restaurant_owner')
+    user.groups.add(group1)
+
+    user.save()
+    restaurant.save()
+
+    return Response({"Successfully added restaurant owner"}, status=status.HTTP_200_OK)
+
+# Delete Request
+@csrf_exempt
+@api_view(['DELETE',])
+@permission_classes([IsAuthenticated])
+@admin_only
+def delete_request(request, id):
+    try:
+        r = Request.objects.get(pk=id)
+    except Request.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        r.delete()
+        return Response({"Deleted request successfully"}, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
+
