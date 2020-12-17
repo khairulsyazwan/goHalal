@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Grid, Typography, Chip } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Typography,
+  Chip,
+  Card,
+  CardContent,
+  Button,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 function Admin() {
@@ -11,21 +19,19 @@ function Admin() {
     return () => {};
   }, []);
 
-  function getTable() {
-    // try {
-    //     let resp = await axios.get(
-    //       `http://localhost:8000/api/v1/restaurants/${id}`
-    //     );
-    //     let info = resp.data.restaurant;
-    //     // console.log(resp);
-    //     setSingle({ info });
-    //     setisLoaded(true);
-    //   } catch (err) {
-    //     console.log(err.response);
-    //   }
-
-    console.log("hello");
-    //   setRequest()
+  async function getTable() {
+    try {
+      let token = localStorage.getItem("token");
+      let resp = await axios.get(
+        `http://localhost:8000/api/v1/auth/get-request`,
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      let info = resp.data.requests;
+      console.log(info);
+      setRequest(info);
+    } catch (err) {
+      console.log(err.response);
+    }
   }
 
   const url =
@@ -42,60 +48,73 @@ function Admin() {
 
   const classes = useStyles();
 
-  return (
-    <>
-      <Grid
-        container
-        className={classes.header}
-        alignItems="center"
-        justify="center"
-      >
-        <Grid item>
-          <Grid container justify="center">
-            <Typography variant="h2" color="textSecondary">
-              Welcome back Admin!
-            </Typography>
-          </Grid>
+  function renderPage() {
+    return (
+      <>
+        <Grid
+          container
+          className={classes.header}
+          alignItems="center"
+          justify="center"
+        >
+          <Grid item>
+            <Grid container justify="center">
+              <Typography variant="h2" color="textSecondary">
+                Welcome back Admin!
+              </Typography>
+            </Grid>
 
-          <Grid container justify="center" style={{ marginTop: "5px" }}>
-            <Chip
-              color="primary"
-              label="5 pending requests"
-              style={{ padding: "10px" }}
-            />
+            <Grid container justify="center" style={{ marginTop: "5px" }}>
+              <Chip
+                color="primary"
+                label={`${request.length} pending request(s)`}
+                style={{ padding: "10px" }}
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid container>
-        <Container>
-          {/* <ul className="list-group mb-4">
-            <Grid container justify="center">
-              <Grid item xs={8}>
-                {reviews.map((card, index) => (
-                  <Grid item xs={12} key={index}>
-                    <Card
-                      className={classes.card}
-                      style={{ marginTop: "10px" }}
-                    >
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {card.review_title}
-                        </Typography>
-                        <Typography>{stars(card.average_rating)}</Typography>
-                        <Typography>
-                          {card.review_body} - {card.user.username}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
+        <Grid container>
+          <Container>
+            <ul className="list-group mb-4">
+              <Grid container justify="center">
+                <Grid item xs={10}>
+                  {request.map((card, index) => (
+                    <Grid item xs={12} key={index}>
+                      <Card
+                        className={classes.card}
+                        style={{ marginTop: "10px" }}
+                      >
+                        <CardContent className={classes.cardContent}>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            {card.id} - {card.user.username.toUpperCase()}
+                          </Typography>
+                          <a href={`mailto: ${card.user.email}`}>
+                            {card.user.email}
+                          </a>
+                          <Typography>
+                            Requesting ownership of {card.restaurant.name}
+                          </Typography>
+                          <Button
+                            style={{ marginTop: "10px" }}
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                          >
+                            Ok bro
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
               </Grid>
-            </Grid>
-          </ul> */}
-        </Container>
-      </Grid>
-    </>
-  );
+            </ul>
+          </Container>
+        </Grid>
+      </>
+    );
+  }
+  return <>{request && renderPage()}</>;
 }
 
 export default Admin;

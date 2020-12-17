@@ -127,10 +127,10 @@ export default function SimpleTabs({
 
   async function letAdminKnow() {
     try {
-      let data = { userId: userId, restaurantId: id };
+      let data = { user: userId, restaurant: id };
       let token = localStorage.getItem("token");
       let resp = await axios.post(
-        `http://localhost:8000/api/v1/restaurants`,
+        `http://localhost:8000/api/v1/auth/request-ownership/${userId}/${id}`,
         data,
         { headers: { Authorization: `Token ${token}` } }
       );
