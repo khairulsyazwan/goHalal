@@ -36,7 +36,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Profile Serializer
 class ProfileSerializer(serializers.ModelSerializer):
-    restaurant_owned = RestaurantSerializer(read_only=True)
     class Meta:
         model = UserProfile
         fields = '__all__'
