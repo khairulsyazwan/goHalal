@@ -12,7 +12,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 function Admin() {
-  const [request, setRequest] = useState();
+  const [request, setRequest] = useState([]);
 
   useEffect(() => {
     getTable();
@@ -32,6 +32,40 @@ function Admin() {
     } catch (err) {
       console.log(err.response);
     }
+  }
+
+  async function deleteRequest(reqid) {
+    try {
+      let token = localStorage.getItem("token");
+      let resp = await axios.delete(
+        `http://localhost:8000/api/v1/auth/delete-request/${reqid}`,
+        { headers: { Authorization: `Token ${token}` } }
+      );
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+
+  async function acceptRequest(user, rest) {
+    try {
+      let token = localStorage.getItem("token");
+      let resp = await axios.put(
+        `http://localhost:8000/api/v1/auth/accept-request/${user}/${rest}`,
+        {},
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      let info = resp.data.requests;
+      console.log(info);
+      setRequest(info);
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+
+  function submitRequest(req, user, rest) {
+    acceptRequest(user, rest);
+    deleteRequest(req);
+    getTable();
   }
 
   const url =
@@ -99,6 +133,13 @@ function Admin() {
                             fullWidth
                             variant="contained"
                             color="primary"
+                            onClick={() =>
+                              submitRequest(
+                                card.id,
+                                card.user.id,
+                                card.restaurant.id
+                              )
+                            }
                           >
                             Ok bro
                           </Button>
@@ -114,7 +155,7 @@ function Admin() {
       </>
     );
   }
-  return <>{request && renderPage()}</>;
+  return <>{request.length == 0 ? renderPage() : renderPage()}</>;
 }
 
 export default Admin;

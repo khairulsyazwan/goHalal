@@ -121,7 +121,6 @@ export default function SimpleTabs({
     // console.log(formData);
     if (formData) {
       editRestaurant();
-      getRestaurant();
     }
   }
 
@@ -170,6 +169,7 @@ export default function SimpleTabs({
       );
       console.log(resp);
       alert("Successfully edited restaurant!");
+      getRestaurant();
     } catch (err) {
       console.log(err.response);
       alert("Meh");
