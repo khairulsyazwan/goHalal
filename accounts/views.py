@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 import cloudinary.api
+from .decorators import *
 from .models import *
 from .serializers import *
 
@@ -208,3 +209,47 @@ def unfavourite_restaurant(request, user_id, restaurant_id):
     
 
     return Response({"Successfully unfavourited restaurant"}, status=status.HTTP_200_OK)
+
+
+# Request to become restaurant owner
+@csrf_exempt
+@api_view(['POST',])
+@permission_classes([IsAuthenticated])
+def request_ownership(request, user_id, restaurant_id):
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            restaurant = Restaurant.objects.get(pk=restaurant_id)
+        except Restaurant.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = RequestSerializer(data=request.data)
+
+    if serializer.is_valid():
+        review = serializer.save()
+
+        user.request.add(review)
+        restaurant.request.add(review)
+
+        serializer.save()
+        
+
+    return Response({"Successfully sent to admin"}, status=status.HTTP_200_OK)
+
+# Get all request
+@csrf_exempt
+@api_view(['GET',])
+@permission_classes([IsAuthenticated])
+@admin_only
+def get_request(request):
+
+    if request.method == 'GET':
+        r = Request.objects.all()
+
+        request_serializer = RequestSerializer(r, many=True)
+
+    return Response({"requests": request_serializer.data}, status=status.HTTP_200_OK)
