@@ -56,112 +56,15 @@ const UserProfile = (props) => {
   const { history } = props;
   let historyRoute = useHistory();
   const container = useRef(null);
-  let { id } = useParams();
+  // let { id } = useParams();
 
   const username = localStorage.getItem('username');
   console.log("username = ", username)
-  let userId = localStorage.getItem("userId");
-  console.log("user Id = ", userId)
+  let Id = localStorage.getItem("userId");
+  console.log("user Id = ", typeof Id)
   const token = localStorage.getItem('token');
-  // const loggedUser = token;
   Axios.defaults.headers.common['Authorization'] = token;
-  
-  const [formData, setFormData] = useState({
-    username: "",
-    first_Name: "",
-    last_Name: "",
-    email: "",
-  });
 
-  const [user, setUser] = useState();
-  const [success, setSuccess] = useState(false);
-  const [editProfile, setEditProfile] = useState(false);
-  const [form, setForm] = useState({});
-  const [isAuth, setIsAuth] = useState(false);
-  // const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  // const [confirmDelPhoto, setConfirmDelPhoto] = useState(false);
-  const [ownProfile, setOwnProfile] = useState();
-
-  if (isAuth && localStorage.getItem('token') != null) {
-  historyRoute.push("/");;
-  setIsAuth(true)
-  }
-
-    // async function getUser() {
-    //   try {
-    //     let resp = await Axios.get(`http://localhost:8000/api/v1/auth/get-user/${userId}`);
-    //     setUser(resp.data);
-    //     setSuccess(true);
-    //     console.log(resp.data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-    //   getUser();
-    // }
-
-
-  // async function editUser() {
-  //   try {
-  //     let token = localStorage.getItem("token");
-  //     let resp = await Axios.put(
-  //       `http://localhost:8000/api/v1/auth/update-user/user/${userId}`,
-  //       formData,
-  //       { headers: { Authorization: `Token ${token}` } }
-  //     );
-  //     console.log(resp);
-  //     alert("Successfully update profile!");
-  //   } catch (err) {
-  //     console.log(err.response);
-  //   }
-  
-
-  // check user changes
-  // useEffect(() => {
-  //   if(user.found && token) {
-  //     if(user.userId === loggedUser.userId) {
-  //       setOwnProfile(true)
-  //       setForm({
-  //         email: user.email,
-  //         first_name: user.first_name,
-  //         last_name: user.last_name,
-  //         username: user.username
-  //       })
-  //     }
-  //   }
-  // }, [user])
-  
-
-
-
-//////////////////////////////////////////////////////////////
-
-
-    const handleBack = () => {
-    setEditProfile(editProfile - 1);
-  };
-
-  const handleEdit = () => {
-  setEditProfile(!editProfile);
-  };
-
-  const handleClick = (pageURL) => {
-    history.push(pageURL)
-  };
-
-  // // const onChange = (e) =>
-  // //   setUserForm({ ...formData, [e.target.name]: e.target.value });
-
-  // function handleChange(e) {
-  //   const value = e.target.value;
-  //   setFormData({ ...form, [e.target.name]: value})
-  //   console.log("new value = ", e.target.value);
-  // }
-
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   editUser();
-  // };
 
   return (
   <>
@@ -202,7 +105,7 @@ const UserProfile = (props) => {
                 // variant="outlined"
                 // fullWidth
                 value={form.first_name}
-                // onChange={handleChange}
+                onChange={handleChange}
                 autoComplete="given-name"
               />
             </Grid>
@@ -215,7 +118,7 @@ const UserProfile = (props) => {
                 // variant="outlined"
                 // fullWidth
                 value={form.last_name}
-                // onChange={handleChange}
+                onChange={handleChange}
                 autoComplete="family-name"
               />
             </Grid>
@@ -228,7 +131,7 @@ const UserProfile = (props) => {
                 // variant="outlined"
                 // fullWidth
                 value={form.username}
-                // onChange={handleChange}
+                onChange={handleChange}
                 autoComplete="username"
               />
             </Grid>
@@ -241,20 +144,19 @@ const UserProfile = (props) => {
                 // variant="outlined"
                 // fullWidth
                 value={form.email}
-                // onChange={handleChange}
+                onChange={handleChange}
                 autoComplete="email-address"
               />
             </Grid>
           </Grid>
             <Button 
             className={classes.button} 
-            // onClick={handleBack}
-            >
+            onClick={handleBack}>
             Back
             </Button>
             <Button 
             className={classes.button}
-            // onClick={onSubmit} 
+            onClick={onSubmit} 
             >
             Save
             </Button>
@@ -324,6 +226,13 @@ const UserProfile = (props) => {
 }
 
 export default withRouter(UserProfile)
+
+
+  // const setToken = (data) => {
+  //     localStorage.setItem("token", JSON.stringify(data));
+  //     setAuthToken(data);
+  //   }
+
 
         /* <Grid container direction="column" item xs={4}>
         <Grid
