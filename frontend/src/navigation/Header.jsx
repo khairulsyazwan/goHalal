@@ -90,11 +90,6 @@ const Header = (props) => {
   //   setAuth(event.target.checked);
   // };
 
-  useEffect(() => {
-    getUser();
-    return () => {};
-  }, []);
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -112,6 +107,8 @@ const Header = (props) => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("userId");
+    setUserGroup("");
+    setUsername("");
     historyRoute.push("/");
   }
 
@@ -127,12 +124,15 @@ const Header = (props) => {
           `http://localhost:8000/api/v1/auth/get-user/${userId}`
         );
         setUserGroup(resp.data.group.name);
-        console.log(userGroup);
         setUsername(localStorage.getItem("username"));
       } catch (err) {
         console.log(err.response);
       }
     }
+  }
+
+  if (token) {
+    getUser();
   }
 
   // console.log("token = ",token)
@@ -227,13 +227,13 @@ const Header = (props) => {
                       Logout
                     </Button>
 
-                    {userGroup == "admin" ? (
+                    {userGroup === "admin" ? (
                       <Button
                         className={classes.button}
                         variant="text"
                         onClick={() => handleButtonClick(`/admin`)}
                       >
-                        Logged in as: {username}
+                        Admin Dashboard
                       </Button>
                     ) : (
                       <Button

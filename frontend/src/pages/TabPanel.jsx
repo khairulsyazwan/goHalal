@@ -125,7 +125,22 @@ export default function SimpleTabs({
     }
   }
 
-  function letAdminKnow() {
+  async function letAdminKnow() {
+    try {
+      let data = { userId: userId, restaurantId: id };
+      let token = localStorage.getItem("token");
+      let resp = await axios.post(
+        `http://localhost:8000/api/v1/restaurants`,
+        data,
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      console.log(resp);
+      alert("Done! Admin notified!");
+    } catch (err) {
+      console.log(err.response);
+      alert("Please login!");
+    }
+
     console.log("hello");
   }
 
@@ -414,7 +429,7 @@ export default function SimpleTabs({
       {userGroup != "restaurant_owner" && (
         <TabPanel value={value} index={2}>
           <Grid container justify="center" alignItems="center">
-            <Grid item xs={12} alignItems="center" style={{ margin: "20px" }}>
+            <Grid item xs={12} style={{ margin: "20px" }}>
               <Typography variant="h5" align="center">
                 If you own this place..
               </Typography>
