@@ -125,6 +125,10 @@ export default function SimpleTabs({
     }
   }
 
+  function letAdminKnow() {
+    console.log("hello");
+  }
+
   async function postReview() {
     try {
       let token = localStorage.getItem("token");
@@ -169,12 +173,15 @@ export default function SimpleTabs({
           centered
         >
           <Tab label="Reviews" {...a11yProps(0)} />
-          {userGroup == "normal_user" ? (
-            <Tab label="Leave A Review" {...a11yProps(1)} />
-          ) : (
+
+          {userGroup == "restaurant_owner" ? (
             <Tab label="Edit Page" {...a11yProps(1)} />
+          ) : (
+            <Tab label="Leave A Review" {...a11yProps(1)} />
           )}
-          {/* <Tab label="Leave A Review" {...a11yProps(1)} /> */}
+          {userGroup != "restaurant_owner" && (
+            <Tab label="Own this place?" {...a11yProps(2)} />
+          )}
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -209,7 +216,85 @@ export default function SimpleTabs({
       </TabPanel>
 
       <TabPanel value={value} index={1}>
-        {userGroup == "normal_user" ? (
+        {userGroup == "restaurant_owner" ? (
+          <Container component="main" maxWidth="md">
+            <div className={classes.paper}>
+              <form className={classes.form} noValidate>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="name"
+                      name="name"
+                      variant="outlined"
+                      fullWidth
+                      id="name"
+                      label="name"
+                      autoFocus
+                      onChange={onChange2}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      id="address"
+                      label="address"
+                      name="address"
+                      autoComplete="address"
+                      onChange={onChange2}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel id="cuisine-label">Cuisine</InputLabel>
+                      <Select
+                        labelId="cuisine-label"
+                        id="cuisine"
+                        name="cuisine"
+                        fullWidth
+                        defaultValue=""
+                        onChange={onChange2}
+                      >
+                        <MenuItem value="European">European</MenuItem>
+                        <MenuItem value="American">American</MenuItem>
+                        <MenuItem value="Bakery and Cakes">
+                          Bakery and Cakes
+                        </MenuItem>
+                        <MenuItem value="Beverages">Beverages</MenuItem>
+                        <MenuItem value="Chinese">Chinese</MenuItem>
+                        <MenuItem value="Desserts">Desserts</MenuItem>
+                        <MenuItem value="Fast Food">Fast Food</MenuItem>
+                        <MenuItem value="Fusion">Fusion</MenuItem>
+                        <MenuItem value="Indian">Indian</MenuItem>
+                        <MenuItem value="Indonesian">Indonesian</MenuItem>
+                        <MenuItem value="International">International</MenuItem>
+                        <MenuItem value="Japanese">Japanese</MenuItem>
+                        <MenuItem value="Korean">Korean</MenuItem>
+                        <MenuItem value="Malay">Malay</MenuItem>
+                        <MenuItem value="Mediterranean">Mediterranean</MenuItem>
+                        <MenuItem value="Peranakan">Peranakan</MenuItem>
+                        <MenuItem value="Pizza">Pizza</MenuItem>
+                        <MenuItem value="Seafood">Seafood</MenuItem>
+                        <MenuItem value="Thai">Thai</MenuItem>
+                        <MenuItem value="Western">Western</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={submit2}
+                >
+                  Submit
+                </Button>
+              </form>
+            </div>
+          </Container>
+        ) : (
           <Container component="main" maxWidth="md">
             <div className={classes.paper}>
               <form className={classes.form} noValidate>
@@ -323,86 +408,30 @@ export default function SimpleTabs({
               </form>
             </div>
           </Container>
-        ) : (
-          <Container component="main" maxWidth="md">
-            <div className={classes.paper}>
-              <form className={classes.form} noValidate>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="name"
-                      name="name"
-                      variant="outlined"
-                      fullWidth
-                      id="name"
-                      label="name"
-                      autoFocus
-                      onChange={onChange2}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      id="address"
-                      label="address"
-                      name="address"
-                      autoComplete="address"
-                      onChange={onChange2}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl fullWidth>
-                      <InputLabel id="cuisine-label">Cuisine</InputLabel>
-                      <Select
-                        labelId="cuisine-label"
-                        id="cuisine"
-                        name="cuisine"
-                        fullWidth
-                        defaultValue=""
-                        onChange={onChange2}
-                      >
-                        <MenuItem value="European">European</MenuItem>
-                        <MenuItem value="American">American</MenuItem>
-                        <MenuItem value="Bakery and Cakes">
-                          Bakery and Cakes
-                        </MenuItem>
-                        <MenuItem value="Beverages">Beverages</MenuItem>
-                        <MenuItem value="Chinese">Chinese</MenuItem>
-                        <MenuItem value="Desserts">Desserts</MenuItem>
-                        <MenuItem value="Fast Food">Fast Food</MenuItem>
-                        <MenuItem value="Fusion">Fusion</MenuItem>
-                        <MenuItem value="Indian">Indian</MenuItem>
-                        <MenuItem value="Indonesian">Indonesian</MenuItem>
-                        <MenuItem value="International">International</MenuItem>
-                        <MenuItem value="Japanese">Japanese</MenuItem>
-                        <MenuItem value="Korean">Korean</MenuItem>
-                        <MenuItem value="Malay">Malay</MenuItem>
-                        <MenuItem value="Mediterranean">Mediterranean</MenuItem>
-                        <MenuItem value="Peranakan">Peranakan</MenuItem>
-                        <MenuItem value="Pizza">Pizza</MenuItem>
-                        <MenuItem value="Seafood">Seafood</MenuItem>
-                        <MenuItem value="Thai">Thai</MenuItem>
-                        <MenuItem value="Western">Western</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={submit2}
-                >
-                  Submit
-                </Button>
-              </form>
-            </div>
-          </Container>
         )}
       </TabPanel>
+
+      {userGroup != "restaurant_owner" && (
+        <TabPanel value={value} index={2}>
+          <Grid container justify="center" alignItems="center">
+            <Grid item xs={12} alignItems="center" style={{ margin: "20px" }}>
+              <Typography variant="h5" align="center">
+                If you own this place..
+              </Typography>
+
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={{ margin: "20px" }}
+                onClick={letAdminKnow}
+              >
+                Let the admin know!
+              </Button>
+            </Grid>
+          </Grid>
+        </TabPanel>
+      )}
     </div>
   );
 }

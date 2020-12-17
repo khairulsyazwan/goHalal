@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,8 +15,8 @@ import Menu from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withRouter, useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
+import axios from "axios";
 
-const username = localStorage.getItem("username");
 // console.log("username = ",username);
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,12 +80,20 @@ const Header = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   let historyRoute = useHistory();
+  const [userGroup, setUserGroup] = useState();
+  const [username, setUsername] = useState();
+
   // console.log(isMobile);
 
   /* If User is login or not registered */
   // const handleChange = (event) => {
   //   setAuth(event.target.checked);
   // };
+
+  useEffect(() => {
+    getUser();
+    return () => {};
+  }, []);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -108,6 +116,25 @@ const Header = (props) => {
   }
 
   const token = localStorage.getItem("token");
+
+  async function getUser() {
+    let userId = localStorage.getItem("userId");
+
+    // console.log(userId);
+    if (userId != null) {
+      try {
+        let resp = await axios.get(
+          `http://localhost:8000/api/v1/auth/get-user/${userId}`
+        );
+        setUserGroup(resp.data.group.name);
+        console.log(userGroup);
+        setUsername(localStorage.getItem("username"));
+      } catch (err) {
+        console.log(err.response);
+      }
+    }
+  }
+
   // console.log("token = ",token)
 
   return (
@@ -199,13 +226,24 @@ const Header = (props) => {
                     >
                       Logout
                     </Button>
-                    <Button
-                      className={classes.button}
-                      variant="text"
-                      onClick={() => handleButtonClick(`/user/{int:id}`)}
-                    >
-                      Logged in as: {username}
-                    </Button>
+
+                    {userGroup == "admin" ? (
+                      <Button
+                        className={classes.button}
+                        variant="text"
+                        onClick={() => handleButtonClick(`/admin`)}
+                      >
+                        Logged in as: {username}
+                      </Button>
+                    ) : (
+                      <Button
+                        className={classes.button}
+                        variant="text"
+                        onClick={() => handleButtonClick(`/user/{int:id}`)}
+                      >
+                        Logged in as: {username}
+                      </Button>
+                    )}
                   </div>
                 ) : (
                   <div>
