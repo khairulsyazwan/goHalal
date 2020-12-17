@@ -75,7 +75,7 @@ function Restaurant() {
         `http://localhost:8000/api/v1/restaurants/${id}`
       );
       let info = resp.data.restaurant;
-      // console.log(rest);
+      // console.log(resp);
       setSingle({ info });
       setisLoaded(true);
     } catch (err) {
@@ -103,6 +103,7 @@ function Restaurant() {
       checkLiked(res);
       setFav(res);
       setUserGroup(resp.data.group.name);
+      console.log(resp);
     } catch (err) {
       console.log(err.response);
     }
@@ -208,6 +209,8 @@ function Restaurant() {
               id={id}
               stars={stars}
               userGroup={userGroup}
+              getRestaurant={getRestaurant}
+              getReviews={getReviews}
             />
           </Container>
         </Grid>

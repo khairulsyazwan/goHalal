@@ -8,7 +8,7 @@ import {
 } from "@react-google-maps/api";
 import mapStyle from "./MapStyle";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Backdrop, Link } from "@material-ui/core";
+import { Backdrop, Button, Link } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
@@ -316,24 +316,24 @@ function Map() {
               </Autocomplete>
 
               {/* <Button
-            onClick={getLocation}
-            variant="contained"
-            color="primary"
-            style={{
-              padding: `4px 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: "absolute",
-              left: "50%",
-              top: "10%",
-              // marginLeft: "-15px",
-            }}
-          >
-            Get my location
-          </Button> */}
+                onClick={getLocation}
+                variant="contained"
+                color="primary"
+                style={{
+                  padding: `4px 12px`,
+                  borderRadius: `3px`,
+                  boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                  fontSize: `14px`,
+                  outline: `none`,
+                  textOverflow: `ellipses`,
+                  position: "absolute",
+                  left: "50%",
+                  top: "10%",
+                  // marginLeft: "-15px",
+                }}
+              >
+                Get my location
+              </Button> */}
 
               {locationMarker && (
                 <Marker

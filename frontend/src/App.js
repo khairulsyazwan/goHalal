@@ -16,6 +16,7 @@ import NewHome from "./landings/NewHome";
 import RestaurantUser from "./landings/RestaurantUser";
 import SignIn from "./landings/Signin";
 import SignUp from "./landings/Signup";
+import Admin from "./landings/Admin";
 
 function App() {
   const [valid, setValid] = useState({
@@ -65,6 +66,10 @@ function App() {
 
         <Route path="/restaurantuser">
           <RestaurantUser />
+        </Route>
+
+        <Route path="/admin">
+          <Admin />
         </Route>
       </Switch>
     </BrowserRouter>

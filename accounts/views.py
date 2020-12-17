@@ -84,10 +84,12 @@ class EmailBackend(ModelBackend):
 def get_user(request, id):
     try:
         user = User.objects.get(pk=id)
+
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     try:
         group = Group.objects.get(user=id)
+
     except Group.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
