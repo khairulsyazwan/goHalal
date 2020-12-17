@@ -87,9 +87,9 @@ const UserProfile = (props) => {
     async function getUser() {
       try {
         let resp = await Axios.get(`http://localhost:8000/api/v1/auth/get-user/${Id}`);
-        console.log("axios call = ",resp)
+        // console.log("axios call = ",resp)
         setOwnProfile(resp.data);
-        console.log("getUser = ", resp.data);
+        // console.log("getUser = ", resp.data);
       } catch (error) {
         console.log(error);
       }
