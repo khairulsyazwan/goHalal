@@ -17,6 +17,7 @@ import { withRouter, useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 
 const username = localStorage.getItem("username");
+// console.log("username = ",username);
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -77,7 +78,7 @@ const Header = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   let historyRoute = useHistory();
   // console.log(isMobile);
 
@@ -107,6 +108,7 @@ const Header = (props) => {
   }
 
   const token = localStorage.getItem("token");
+  // console.log("token = ",token)
 
   return (
     <div className={classes.root}>
@@ -181,7 +183,7 @@ const Header = (props) => {
                 <Button className={classes.button} variant="text" onClick={() => handleButtonClick('/register')}>Register</Button> */}
               </div>
               <div className={classes.headerOptions3}>
-                <Typography variant="h3" color="textPrimary">
+                <Typography variant="h4" color="textPrimary">
                   go.halal
                 </Typography>
               </div>

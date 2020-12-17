@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom';
 // import { PrivateRoute } from '../private/PrivateRoute';
 // import { AuthContext } from "../private/Auth";
-import { useHistory } from 'react-router-dom';
-import { Avatar, Button, Box, Portal, Typography, Paper, Grid, TextField } from "@material-ui/core/";
+import { withRouter, useHistory } from 'react-router-dom';
+import { Avatar, Button, Portal, Typography, Paper, Grid, TextField, FormControl } from "@material-ui/core/";
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,7 +11,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from "@material-ui/core/styles";
 import AppFooter from '../modules/views/AppFooter';
-// import Axios from './axios';
+import Axios from 'axios';
 
 // Material Theme
 
@@ -53,37 +53,113 @@ edit: {
 const UserProfile = (props) => {
   // Material UI Theme
   const classes = useStyles();
+
+  const username = localStorage.getItem('username');
+  console.log("username", username)
+  let Id = localStorage.getItem("userId");
+  console.log("user Id = ", Id)
+  const token = localStorage.getItem('token');
+  const loggedUser = token;
+  Axios.defaults.headers.common['Authorization'] = token;
+  
+  const [user, setUser] = useState({
+    user: null,
+    found: false,
+  });
+
   const { history } = props;
   let historyRoute = useHistory();
-  const token = localStorage.getItem('token');
-  // console.log(token)
-  const username = localStorage.getItem('username');
-  let { id } = useParams();
-
-
-  const [isAuth, setIsAuth] = useState(false);
-  const [form, setForm] = useState({});
-  const [editProfile, setEditProfile] = useState(false);
-  const [ownProfile, setOwnProfile] = useState(false);
-  // const [activeStep, setActiveStep] = useState(0);
   const container = useRef(null);
+  let { id } = useParams();
+  
+  // const [userprofile, setUserProfile] = useState(profile.profile)
+  const [editProfile, setEditProfile] = useState(false);
+  const [form, setForm] = useState({});
+  const [formData, setFormData] = useState();
+  const [isAuth, setIsAuth] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [confirmDelPhoto, setConfirmDelPhoto] = useState(false);
+  const [ownProfile, setOwnProfile] = useState();
+  // const [activeStep, setActiveStep] = useState(0);
+
+  //fetch user
+  useEffect(() => {
+    async function getUser() {
+      try {
+        let resp = await Axios.get(`http://localhost:8000/api/v1/auth/get-user/${Id}`);
+        setOwnProfile(resp.data);
+        console.log("getUser = ", resp.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getUser()
+  }, [])
+
 
   if (isAuth && localStorage.getItem('token') != null) {
     historyRoute.push("/");;
     setIsAuth(true)
   }
+
+  // check user changes
+  useEffect(() => {
+    if(user.found && token) {
+      if(user.userId === loggedUser.userId) {
+        setOwnProfile(true)
+        setForm({
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          username: user.username
+        })
+      }
+    }
+  }, [user])
+
+  function handleChange(e) {
+    const value = e.target.value;
+    setForm({ ...form, [e.target.name]: value})
+    console.log("new value", e.target.value);
+  }
+
+  // const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  async function saveProfile(profile) {
+    try {
+      let resp = await Axios.put(`http://localhost:8000/api/v1/auth/update-user/${Id}`, 
+      formData
+    );
+  } catch (err) {
+      console.log(err.response)
+    }
+  }
+
+  
+//  await Axios.put(`http://localhost:8000/api/v1/auth/update-user/${Id}`, { 
+//       headers: { 
+//         Authorization: `Token ${token}` 
+//       },
+//     }
+//   )
 //////////////////////////////////////////////////////////////
-  const handleSave = () => {
-    setEditProfile(editProfile());
-  };
+  // const handleSave = () => {
+  //   setEditProfile(editProfile());
+  // };
 
     const handleBack = () => {
     setEditProfile(editProfile - 1);
   };
 
-  const handleClick = () => {
+  const handleEdit = () => {
   setEditProfile(!editProfile);
   };
+
+  const handleClick = (pageURL) => {
+    history.push(pageURL)
+  };
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
   <>
@@ -93,13 +169,13 @@ const UserProfile = (props) => {
             <Grid item xs={12} md={1}></Grid>
     <Grid item xs={12} md={2}>
       <CardMedia/>
-        <Avatar alt="avatar" src="/static/images/avatar/1.jpg" className={classes.large} />
+        <Avatar alt="avatar" className={classes.large} />
           <CardContent>
           {/* wadafok here m8 */}
           <Typography gutterBottom variant="h5" component="h2">
             {username}
           </Typography>
-        <Button className={classes.butt} variant="contained" color="secondary" type="button" onClick={handleClick}>
+        <Button className={classes.butt} variant="contained" color="secondary" type="button" onClick={handleEdit}>
         {editProfile ? 'Edit Profile' : 'Edit Profile'}
         </Button>
       {/* <div ref={container} /> */}
@@ -109,8 +185,9 @@ const UserProfile = (props) => {
     {editProfile ? (
     <Portal container={container.current}>
       <Paper elevation={3}>
+      <FormControl>
         <form>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h6" gutterBottom>
             Edit Profile
           </Typography>
           <Grid container spacing={3} className={classes.edit}>
@@ -122,6 +199,8 @@ const UserProfile = (props) => {
                 label="First name"
                 // variant="outlined"
                 // fullWidth
+                value={form.first_name}
+                onChange={handleChange}
                 autoComplete="given-name"
               />
             </Grid>
@@ -133,6 +212,8 @@ const UserProfile = (props) => {
                 label="Last name"
                 // variant="outlined"
                 // fullWidth
+                value={form.last_name}
+                onChange={handleChange}
                 autoComplete="family-name"
               />
             </Grid>
@@ -144,6 +225,8 @@ const UserProfile = (props) => {
                 label="Username"
                 // variant="outlined"
                 // fullWidth
+                value={form.username}
+                onChange={handleChange}
                 autoComplete="username"
               />
             </Grid>
@@ -155,6 +238,8 @@ const UserProfile = (props) => {
                 label="Email Address"
                 // variant="outlined"
                 // fullWidth
+                value={form.email}
+                onChange={handleChange}
                 autoComplete="email-address"
               />
             </Grid>
@@ -166,10 +251,11 @@ const UserProfile = (props) => {
             </Button>
             <Button 
             className={classes.button} 
-            onClick={handleSave}>
+            >
             Save
             </Button>
         </form>
+        </FormControl>
       </Paper>
     </Portal>
     ) : null}
@@ -189,7 +275,7 @@ const UserProfile = (props) => {
             <Card className={classes.root}>
             <CardActionArea>
             <CardMedia/>
-        <CardContent>
+        <CardContent onClick={() => handleClick("/")}>
           <Typography variant="h3" component="h3">
             My Favorite Restaurants
           </Typography>
@@ -212,7 +298,7 @@ const UserProfile = (props) => {
         <Card className={classes.root}>
           <CardActionArea>
             <CardMedia/>
-        <CardContent>
+        <CardContent onClick={() => handleClick("/")}>
           <Typography variant="h3" component="h3">
             My Restaurant Reviews
           </Typography>
@@ -233,7 +319,7 @@ const UserProfile = (props) => {
   )
 }
 
-export default UserProfile
+export default withRouter(UserProfile)
 
 
   // const setToken = (data) => {
