@@ -34,7 +34,8 @@ def sign_up(request):
 
             login(request, user)
 
-            return Response({"user": serializer.data, "token": Token.objects.get(user=user).key}, status=status.HTTP_201_CREATED)
+
+            return Response({"user": serializer.data, "token": Token.objects.get(user=user).key, "user_id": user.pk}, status=status.HTTP_201_CREATED)
         else:
             return Response({"errors": serializer._errors}, status=status.HTTP_400_BAD_REQUEST)
 
