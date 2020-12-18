@@ -94,7 +94,6 @@ export default function SignIn({
   };
 
   if (isAuth && isAdmin && localStorage.getItem("token") != null) {
-    console.log("ok");
     return <Redirect to="/admin" />;
   } else if (isAuth) {
     return <Redirect to="/" />;

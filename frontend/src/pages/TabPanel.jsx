@@ -134,7 +134,7 @@ export default function SimpleTabs({
         data,
         { headers: { Authorization: `Token ${token}` } }
       );
-      console.log(resp);
+      // console.log(resp);
       alert("Done! Admin notified!");
     } catch (err) {
       console.log(err.response);
@@ -150,7 +150,7 @@ export default function SimpleTabs({
         formData,
         { headers: { Authorization: `Token ${token}` } }
       );
-      console.log(resp);
+      // console.log(resp);
       alert("Successfully added review!");
     } catch (err) {
       console.log(err.response);
@@ -166,7 +166,7 @@ export default function SimpleTabs({
         formData,
         { headers: { Authorization: `Token ${token}` } }
       );
-      console.log(resp);
+      // console.log(resp);
       alert("Successfully edited restaurant!");
       getRestaurant();
     } catch (err) {

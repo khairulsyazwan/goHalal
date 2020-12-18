@@ -68,7 +68,7 @@ export default function SignUp({ isAuth, setIsAuth }) {
       localStorage.setItem("username", resp.data.user.username);
       localStorage.setItem("userId", resp.data.user_id);
       setIsAuth(true);
-      console.log(resp);
+      // console.log(resp);
     } catch (error) {
       console.log(error);
     }

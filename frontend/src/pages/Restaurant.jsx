@@ -34,7 +34,7 @@ function Restaurant({ isAuth }) {
     if (isAuth) {
       getUser();
     }
-    console.log(isAuth);
+    // console.log(isAuth);
 
     return () => {};
   }, []);
@@ -158,7 +158,7 @@ function Restaurant({ isAuth }) {
           {},
           { headers: { Authorization: `Token ${token}` } }
         );
-        console.log(resp);
+        // console.log(resp);
         setisLiked(false);
       } catch (err) {
         console.log(err.response);

@@ -102,7 +102,7 @@ const UserProfile = (props) => {
         setOwnProfile(resp.data);
         setFavourites(resp.data.profile.favourites);
 
-        console.log("getUser = ", resp.data);
+        // console.log("getUser = ", resp.data);
       } catch (error) {
         console.log(error);
       }
@@ -133,7 +133,7 @@ const UserProfile = (props) => {
   function handleChange(e) {
     const value = e.target.value;
     setForm({ ...form, [e.target.name]: value });
-    console.log("new value", e.target.value);
+    // console.log("new value", e.target.value);
   }
 
   // const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
@@ -161,12 +161,12 @@ const UserProfile = (props) => {
 
   const handleBack = () => {
     setEditProfile(editProfile - 1);
-    console.log(editProfile);
+    // console.log(editProfile);
   };
 
   const handleEdit = () => {
     setEditProfile(!editProfile);
-    console.log(editProfile);
+    // console.log(editProfile);
   };
 
   const handleClick = (pageURL) => {

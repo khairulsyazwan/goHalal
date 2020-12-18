@@ -27,7 +27,7 @@ function Admin() {
         { headers: { Authorization: `Token ${token}` } }
       );
       let info = resp.data.requests;
-      console.log(info);
+      // console.log(info);
       setRequest(info);
     } catch (err) {
       console.log(err.response);
@@ -55,7 +55,7 @@ function Admin() {
         { headers: { Authorization: `Token ${token}` } }
       );
       let info = resp.data.requests;
-      console.log(resp);
+      // console.log(resp);
       setRequest(info);
     } catch (err) {
       console.log(err.response);
