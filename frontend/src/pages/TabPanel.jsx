@@ -140,8 +140,6 @@ export default function SimpleTabs({
       console.log(err.response);
       alert("Please login!");
     }
-
-    console.log("hello");
   }
 
   async function postReview() {
