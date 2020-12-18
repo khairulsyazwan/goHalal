@@ -61,6 +61,10 @@ const useStyles = makeStyles((theme) => ({
 const UserProfile = (props) => {
   // Material UI Theme
   const classes = useStyles();
+  const { history } = props;
+  let historyRoute = useHistory();
+  const container = useRef(null);
+  let { id } = useParams();
 
   const username = localStorage.getItem("username");
   // console.log("username", username)
@@ -81,15 +85,17 @@ const UserProfile = (props) => {
   let { id } = useParams();
 
   // const [userprofile, setUserProfile] = useState(profile.profile)
+
   const [editProfile, setEditProfile] = useState(false);
   const [form, setForm] = useState({});
-  const [formData, setFormData] = useState();
   const [isAuth, setIsAuth] = useState(false);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [confirmDelPhoto, setConfirmDelPhoto] = useState(false);
+  // const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  // const [confirmDelPhoto, setConfirmDelPhoto] = useState(false);
   const [ownProfile, setOwnProfile] = useState();
+
   const [favourites, setFavourites] = useState();
   const [reviews, setReviews] = useState();
+
   // const [activeStep, setActiveStep] = useState(0);
 
   //fetch user
@@ -159,6 +165,7 @@ const UserProfile = (props) => {
   //   setEditProfile(editProfile());
   // };
 
+
   const handleBack = () => {
     setEditProfile(editProfile - 1);
     // console.log(editProfile);
@@ -173,10 +180,22 @@ const UserProfile = (props) => {
     history.push(pageURL);
   };
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // // const onChange = (e) =>
+  // //   setUserForm({ ...formData, [e.target.name]: e.target.value });
+
+  // function handleChange(e) {
+  //   const value = e.target.value;
+  //   setFormData({ ...form, [e.target.name]: value})
+  //   console.log("new value = ", e.target.value);
+  // }
+
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   editUser();
+  // };
 
   return (
+
     <>
       <Grid container justify="center">
         <Grid item xs={4}>
@@ -303,6 +322,7 @@ const UserProfile = (props) => {
               </CardContent>
             </Card>
           </Paper>
+
         </Grid>
         <Grid item xs={6}>
           <Paper>
@@ -335,6 +355,7 @@ export default withRouter(UserProfile);
 //   }
 
 /* <Grid container direction="column" item xs={4}>
+
         <Grid
           item
           xs
