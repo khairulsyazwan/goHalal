@@ -40,7 +40,8 @@ const Register = () => {
     try {
       //register user
       let resp = await Axios.post(
-        "http://localhost:8000/api/v1/auth/signup/",
+        // "http://localhost:8000/api/v1/auth/signup/",
+        "/api/v1/auth/signup/",
         formData
       );
       //store token in local storage

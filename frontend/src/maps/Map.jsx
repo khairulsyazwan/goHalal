@@ -94,7 +94,8 @@ function Map() {
   const classes = useStyles();
   async function getRestaurants() {
     try {
-      let resp = await axios.get("http://localhost:8000/api/v1/restaurants/");
+      // let resp = await axios.get("http://localhost:8000/api/v1/restaurants/");
+      let resp = await axios.get("/api/v1/restaurants/");
       let rest = resp.data.restaurants;
       let arr = locations;
       for (let index = 0; index < rest.length; index++) {
@@ -214,7 +215,7 @@ function Map() {
       setMarkers(results);
       setCurrentRestaurants(curRes);
     } else {
-      console.log("Autocomplete is not loaded yet!");
+      // console.log("Autocomplete is not loaded yet!");
     }
   }
 

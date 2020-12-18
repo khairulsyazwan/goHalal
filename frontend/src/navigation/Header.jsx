@@ -130,7 +130,8 @@ function Header({
     if (userId != null) {
       try {
         let resp = await axios.get(
-          `http://localhost:8000/api/v1/auth/get-user/${userId}`
+          // `http://localhost:8000/api/v1/auth/get-user/${userId}`
+          `/api/v1/auth/get-user/${userId}`
         );
         setUsername(localStorage.getItem("username"));
         // console.log(resp.data);

@@ -97,12 +97,13 @@ const UserProfile = (props) => {
     async function getUser() {
       try {
         let resp = await Axios.get(
-          `http://localhost:8000/api/v1/auth/get-user/${Id}`
+          // `http://localhost:8000/api/v1/auth/get-user/${Id}`
+          `/api/v1/auth/get-user/${Id}`
         );
         setOwnProfile(resp.data);
         setFavourites(resp.data.profile.favourites);
 
-        console.log("getUser = ", resp.data);
+        // console.log("getUser = ", resp.data);
       } catch (error) {
         console.log(error);
       }
@@ -133,14 +134,15 @@ const UserProfile = (props) => {
   function handleChange(e) {
     const value = e.target.value;
     setForm({ ...form, [e.target.name]: value });
-    console.log("new value", e.target.value);
+    // console.log("new value", e.target.value);
   }
 
   // const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
   async function saveProfile(profile) {
     try {
       let resp = await Axios.put(
-        `http://localhost:8000/api/v1/auth/update-user/${Id}`,
+        // `http://localhost:8000/api/v1/auth/update-user/${Id}`,
+        `/api/v1/auth/update-user/${Id}`,
         formData
       );
     } catch (err) {
@@ -161,12 +163,12 @@ const UserProfile = (props) => {
 
   const handleBack = () => {
     setEditProfile(editProfile - 1);
-    console.log(editProfile);
+    // console.log(editProfile);
   };
 
   const handleEdit = () => {
     setEditProfile(!editProfile);
-    console.log(editProfile);
+    // console.log(editProfile);
   };
 
   const handleClick = (pageURL) => {

@@ -130,7 +130,8 @@ export default function SimpleTabs({
       let data = { user: userId, restaurant: id };
       let token = localStorage.getItem("token");
       let resp = await axios.post(
-        `http://localhost:8000/api/v1/auth/request-ownership/${userId}/${id}`,
+        // `http://localhost:8000/api/v1/auth/request-ownership/${userId}/${id}`,
+        `/api/v1/auth/request-ownership/${userId}/${id}`,
         data,
         { headers: { Authorization: `Token ${token}` } }
       );
@@ -146,7 +147,8 @@ export default function SimpleTabs({
     try {
       let token = localStorage.getItem("token");
       let resp = await axios.post(
-        `http://localhost:8000/api/v1/reviews/post/${userId}/${id}/`,
+        // `http://localhost:8000/api/v1/reviews/post/${userId}/${id}/`,
+        `/api/v1/reviews/post/${userId}/${id}/`,
         formData,
         { headers: { Authorization: `Token ${token}` } }
       );
@@ -162,7 +164,8 @@ export default function SimpleTabs({
     try {
       let token = localStorage.getItem("token");
       let resp = await axios.put(
-        `http://localhost:8000/api/v1/restaurants/update/${id}/${userId}/`,
+        // `http://localhost:8000/api/v1/restaurants/update/${id}/${userId}/`,
+        `/api/v1/restaurants/update/${id}/${userId}/`,
         formData,
         { headers: { Authorization: `Token ${token}` } }
       );

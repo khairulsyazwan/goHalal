@@ -28,7 +28,8 @@ function AllRestaurants() {
 
   async function getRestaurants() {
     try {
-      let resp = await axios.get("http://localhost:8000/api/v1/restaurants/");
+      // let resp = await axios.get("http://localhost:8000/api/v1/restaurants/");
+      let resp = await axios.get("/api/v1/restaurants/");
       let rest = resp.data.restaurants;
       setLocations(rest);
       setLoading(true);

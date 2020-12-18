@@ -23,7 +23,8 @@ function Admin() {
     try {
       let token = localStorage.getItem("token");
       let resp = await axios.get(
-        `http://localhost:8000/api/v1/auth/get-request`,
+        // `http://localhost:8000/api/v1/auth/get-request`,
+        `/api/v1/auth/get-request`,
         { headers: { Authorization: `Token ${token}` } }
       );
       let info = resp.data.requests;
@@ -38,7 +39,8 @@ function Admin() {
     try {
       let token = localStorage.getItem("token");
       let resp = await axios.delete(
-        `http://localhost:8000/api/v1/auth/delete-request/${reqid}`,
+        // `http://localhost:8000/api/v1/auth/delete-request/${reqid}`,
+        `api/v1/auth/delete-request/${reqid}`,
         { headers: { Authorization: `Token ${token}` } }
       );
     } catch (err) {
@@ -50,7 +52,8 @@ function Admin() {
     try {
       let token = localStorage.getItem("token");
       let resp = await axios.put(
-        `http://localhost:8000/api/v1/auth/accept-request/${user}/${rest}`,
+        // `http://localhost:8000/api/v1/auth/accept-request/${user}/${rest}`,
+        `/api/v1/auth/accept-request/${user}/${rest}`,
         {},
         { headers: { Authorization: `Token ${token}` } }
       );

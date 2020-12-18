@@ -74,7 +74,8 @@ function Restaurant({ isAuth }) {
   async function getRestaurant() {
     try {
       let resp = await axios.get(
-        `http://localhost:8000/api/v1/restaurants/${id}`
+        // `http://localhost:8000/api/v1/restaurants/${id}`
+        `/api/v1/restaurants/${id}`
       );
       let info = resp.data.restaurant;
       // console.log(resp);
@@ -87,7 +88,8 @@ function Restaurant({ isAuth }) {
 
   async function getReviews() {
     try {
-      let resp = await axios.get(`http://localhost:8000/api/v1/reviews/${id}`);
+      // let resp = await axios.get(`http://localhost:8000/api/v1/reviews/${id}`);
+      let resp = await axios.get(`/api/v1/reviews/${id}`);
       let rev = resp.data.reviews;
       setReviews(rev);
       // console.log(resp);
@@ -99,7 +101,8 @@ function Restaurant({ isAuth }) {
   async function getUser() {
     try {
       let resp = await axios.get(
-        `http://localhost:8000/api/v1/auth/get-user/${userId}`
+        // `http://localhost:8000/api/v1/auth/get-user/${userId}`
+        `/api/v1/auth/get-user/${userId}`
       );
       let res = resp.data.profile.favourites;
       checkLiked(res);
@@ -140,7 +143,8 @@ function Restaurant({ isAuth }) {
         let token = localStorage.getItem("token");
         // console.log(token);
         let resp = await axios.post(
-          `http://localhost:8000/api/v1/auth/favourite-restaurant/${userId}/${id}`,
+          // `http://localhost:8000/api/v1/auth/favourite-restaurant/${userId}/${id}`,
+          `/api/v1/auth/favourite-restaurant/${userId}/${id}`,
           {},
           { headers: { Authorization: `Token ${token}` } }
         );
@@ -154,7 +158,8 @@ function Restaurant({ isAuth }) {
       try {
         let token = localStorage.getItem("token");
         let resp = await axios.post(
-          `http://localhost:8000/api/v1/auth/unfavourite-restaurant/${userId}/${id}`,
+          // `http://localhost:8000/api/v1/auth/unfavourite-restaurant/${userId}/${id}`,
+          `/api/v1/auth/unfavourite-restaurant/${userId}/${id}`,
           {},
           { headers: { Authorization: `Token ${token}` } }
         );

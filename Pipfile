@@ -9,6 +9,7 @@ django-cors-headers = "*"
 django = "*"
 cloudinary = "*"
 django-import-export = "*"
+gunicorn = "*"
 
 [dev-packages]
 

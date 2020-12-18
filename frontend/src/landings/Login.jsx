@@ -36,7 +36,8 @@ const Login = () => {
   async function login(values) {
     try {
       let resp = await Axios.post(
-        "http://localhost:8000/api/v1/auth/signin/",
+        // "http://localhost:8000/api/v1/auth/signin/",
+        "/api/v1/auth/signin/",
         formData
       );
       localStorage.setItem("token", resp.data.token);

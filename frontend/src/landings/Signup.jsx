@@ -17,7 +17,6 @@ import Axios from "axios";
 import { Paper } from "@material-ui/core";
 import { Formik } from "formik";
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -63,7 +62,8 @@ export default function SignUp({ isAuth, setIsAuth }) {
   async function register() {
     try {
       let resp = await Axios.post(
-        "http://localhost:8000/api/v1/auth/signup/",
+        // "http://localhost:8000/api/v1/auth/signup/",
+        "/api/v1/auth/signup/",
         formData
       );
       localStorage.setItem("token", resp.data.token);

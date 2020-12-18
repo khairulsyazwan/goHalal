@@ -67,7 +67,8 @@ export default function SignIn({
   async function login() {
     try {
       let resp = await Axios.post(
-        "http://localhost:8000/api/v1/auth/signin/",
+        // "http://localhost:8000/api/v1/auth/signin/",
+        "/api/v1/auth/signin/",
         formData
       );
       // console.log(resp.data);
