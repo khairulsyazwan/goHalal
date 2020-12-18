@@ -55,7 +55,7 @@ function Admin() {
         { headers: { Authorization: `Token ${token}` } }
       );
       let info = resp.data.requests;
-      console.log(info);
+      console.log(resp);
       setRequest(info);
     } catch (err) {
       console.log(err.response);
@@ -155,7 +155,39 @@ function Admin() {
       </>
     );
   }
-  return <>{request.length == 0 ? renderPage() : renderPage()}</>;
+  return (
+    <>
+      {request ? (
+        renderPage()
+      ) : (
+        <>
+          {" "}
+          <Grid
+            container
+            className={classes.header}
+            alignItems="center"
+            justify="center"
+          >
+            <Grid item>
+              <Grid container justify="center">
+                <Typography variant="h2" color="textSecondary">
+                  Welcome back Admin!
+                </Typography>
+              </Grid>
+
+              <Grid container justify="center" style={{ marginTop: "5px" }}>
+                <Chip
+                  color="primary"
+                  label={`No pending requests`}
+                  style={{ padding: "10px" }}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </>
+      )}
+    </>
+  );
 }
 
 export default Admin;

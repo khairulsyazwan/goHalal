@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 // import { PrivateRoute } from '../private/PrivateRoute';
 // import { AuthContext } from "../private/Auth";
 import { withRouter, useHistory } from "react-router-dom";
@@ -290,31 +290,36 @@ const UserProfile = (props) => {
       <div ref={container}></div>
 
       {/* links to view */}
-      {/* <Grid className={classes.cardlinks} container spacing={2}>
+      <Grid className={classes.cardlinks} container spacing={2}>
         <Grid item xs={6}>
           <Paper>
             <Card className={classes.root}>
-              <CardActionArea>
-                <CardMedia />
-                <CardContent>
-                  <Typography variant="h3" component="h3">
-                    My Favorite Restaurants
-                  </Typography>
-                  <div>
-                    {ownProfile && favourites ? (
-                      favourites.map((rev, index) => (
-                        <Typography variant="body1" component="p">
-                          {rev}
-                        </Typography>
-                      ))
-                    ) : (
-                      <Typography variant="body1" component="p">
-                        View all your favorites here
-                      </Typography>
-                    )}
-                  </div>
-                </CardContent>
-              </CardActionArea>
+              <CardMedia />
+              <CardContent>
+                <Typography variant="h3" component="h3">
+                  My Favorite Restaurants
+                </Typography>
+                <div style={{ marginTop: "10px" }}>
+                  {ownProfile && favourites ? (
+                    favourites.map((rev, index) => (
+                      <li>
+                        {/* <Typography variant="body1" component="p" key={index}> */}
+                        <NavLink
+                          to={`/restaurant/${rev.id}`}
+                          style={{ textDecoration: "none" }}
+                        >
+                          {rev.name}
+                        </NavLink>
+                        {/* </Typography> */}
+                      </li>
+                    ))
+                  ) : (
+                    <Typography variant="body1" component="p">
+                      View all your favorites here
+                    </Typography>
+                  )}
+                </div>
+              </CardContent>
             </Card>
           </Paper>
 
@@ -337,7 +342,7 @@ const UserProfile = (props) => {
             </Card>
           </Paper>
         </Grid>
-      </Grid> */}
+      </Grid>
     </>
   );
 };
