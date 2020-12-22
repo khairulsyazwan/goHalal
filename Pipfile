@@ -11,6 +11,7 @@ cloudinary = "*"
 django-import-export = "*"
 gunicorn = "*"
 whitenoise = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
