@@ -16,6 +16,8 @@ import cloudinary
 
 import os
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -109,20 +111,15 @@ WSGI_APPLICATION = 'halalfoodfinder.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-        'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gohalal_development',
-        'USER': 'gohbvebldvrwts',  # postgres
-        'PASSWORD' : '64d565defcd97f16365cf4b63ec644401d95eca62a060496857024020459f3b9',
-        'HOST': 'ec2-3-211-167-220.compute-1.amazonaws.com',
-        'PORT': 5432
-    }
-}
+# DATABASES = {
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.sqlite3',
+#     #     'NAME': BASE_DIR / 'db.sqlite3',
+#     # }
+#     'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+# }
+
+DATABASES['default'] =  dj_database_url.config()
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
@@ -180,3 +177,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
