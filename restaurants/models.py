@@ -28,7 +28,7 @@ class Restaurant(models.Model):
         Thai = 'Thai'
         Western = 'Western'
 
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     cuisine = models.CharField(max_length=50, choices=Cuisine.choices, default='None')
     picture = CloudinaryField('image', default="https://s3.amazonaws.com/vulture-food-photos/defaultvulture.png")
