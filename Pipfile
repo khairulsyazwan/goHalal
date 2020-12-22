@@ -10,6 +10,7 @@ django = "*"
 cloudinary = "*"
 django-import-export = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
