@@ -214,7 +214,7 @@ function Map() {
       removeMarkers();
       setMarkers(results);
       setCurrentRestaurants(curRes);
-      console.log(curRes);
+      // console.log(curRes);
     } else {
       // console.log("Autocomplete is not loaded yet!");
     }
@@ -407,7 +407,7 @@ function Map() {
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
                             <NavLink
-                              to={`/restaurant/${card.id + 1}`}
+                              to={`/restaurant/${card.id - 1}`}
                               style={{ textDecoration: "none" }}
                             >
                               {card.name}
