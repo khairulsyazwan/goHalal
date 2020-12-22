@@ -117,9 +117,9 @@ DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'gohalal_development',
-        'USER': 'khairulsyazwan',  # postgres
-        # 'PASSWORD' : '',
-        'HOST': 'localhost',
+        'USER': 'gohbvebldvrwts',  # postgres
+        'PASSWORD' : '64d565defcd97f16365cf4b63ec644401d95eca62a060496857024020459f3b9',
+        'HOST': 'ec2-3-211-167-220.compute-1.amazonaws.com',
         'PORT': 5432
     }
 }
