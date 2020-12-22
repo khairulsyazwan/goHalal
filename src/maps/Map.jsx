@@ -406,7 +406,7 @@ function Map() {
                         <CardContent className={classes.cardContent}>
                           <Typography gutterBottom variant="h5" component="h2">
                             <NavLink
-                              to={`/restaurant/${card.id}`}
+                              to={`/restaurant/${card.restaurant_id}`}
                               style={{ textDecoration: "none" }}
                             >
                               {card.name}
